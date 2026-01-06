@@ -14,26 +14,7 @@ namespace SLA
         public MainPage()
         {
             InitializeComponent();
-
-            HistorialView.ItemsSource = _historial;
         }
-
-        private async void OnRegistrarInicioClicked(object sender, EventArgs e)
-        {
-            var usuario = UsuarioEntry.Text?.Trim();
-
-            if (string.IsNullOrEmpty(usuario))
-            {
-                await DisplayAlertAsync("Error", "Debe ingresar un usuario", "OK");
-                return;
-            }
-
-            _service.Registrar(usuario, "Inicio manual");
-
-            UsuarioEntry.Text = string.Empty;
-            await DisplayAlertAsync("OK", "Inicio registrado correctamente", "Bien");
-        }
-
         private async void OnInicioClicked(object sender, EventArgs e)
         {
             await RegistrarConTipo("Inicio");
@@ -43,32 +24,48 @@ namespace SLA
         {
             await RegistrarConTipo("Cierre");
         }
-
-        private async Task RegistrarConTipo(string tipo)
-        {
-            var usuario = UsuarioEntry?.Text?.Trim(); // <- protegemos contra null
-
-            if (string.IsNullOrEmpty(usuario))
-            {
-                await DisplayAlertAsync("Error", "Debe ingresar un usuario...", "OK");
-                return;
-            }
-
-            try
-            {
-                _service.Registrar(usuario, tipo);
-                UsuarioEntry.Text = string.Empty;
-                await DisplayAlertAsync("OK", $"{tipo} registrado correctamente", "Bien...");
-            }
-            catch (Exception ex)//la excepcion surge si o si (solucion en el prox commit dea)
-            {
-                await DisplayAlertAsync("Error inesperado", ex.Message, "OK");
-            }
-        }
-
         private async void OnVerHistorialClicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync(nameof(HistorialPage));
         }
+        private async Task RegistrarConTipo(string tipo)
+        {
+            try
+            {
+                _service.Registrar(SesionActual.Usuario, tipo);
+                await DisplayAlertAsync("OK", $"{tipo} registrado correctamente", "Bien");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Error", ex.Message, "OK");
+            }
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (!SesionActual.EstaAutenticado)
+            {
+                await Shell.Current.GoToAsync("Login");
+                return;
+            }
+            if (SesionActual.Rol != "ADMIN")
+            {
+                HistorialButton.IsVisible = false;
+            }
+
+            BienvenidaLabel.Text = $"Hola, {SesionActual.Usuario}";
+        }
+        private async void OnLogoutClicked(object sender, EventArgs e)
+        {
+            SesionActual.Usuario = string.Empty;
+            SesionActual.Rol = string.Empty;
+
+            // Reinicia la navegación y vuelve al Login
+            await Shell.Current.GoToAsync("//Login");
+        }
+
+
     }
 }

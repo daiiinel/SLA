@@ -3,12 +3,17 @@
     x:Class="SLA.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:SLA"
+    xmlns:views="clr-namespace:SLA.Views"
     Title="SLA">
 
+    <!-- Página inicial: LOGIN -->
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="Login"
+        ContentTemplate="{DataTemplate views:LoginPage}" />
+
+    <!-- Página principal (post-login) -->
+    <ShellContent
+        Route="MainPage"
+        ContentTemplate="{DataTemplate views:MainPage}" />
 
 </Shell>
