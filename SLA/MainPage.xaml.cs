@@ -1,6 +1,5 @@
 ﻿using SLA.Services;
 using SLA.Models;
-using System.Collections.ObjectModel;
 using SLA.Views;
 
 
@@ -9,7 +8,6 @@ namespace SLA
     public partial class MainPage : ContentPage
     {
         private readonly InicioSesionService _service = new();
-        private ObservableCollection<InicioSesion> _historial = new();
 
         public MainPage()
         {
@@ -30,9 +28,19 @@ namespace SLA
         }
         private async Task RegistrarConTipo(string tipo)
         {
+            var usuario = SessionService.UsuarioActual;
+
+            if(string.IsNullOrEmpty(usuario))
+            {
+                await DisplayAlertAsync("Sesion invalida", "usuario vacio","OK");
+
+                await Shell.Current.GoToAsync("//LoginPage");
+                return;
+            }
+
             try
             {
-                _service.Registrar(SesionActual.Usuario, tipo);
+                _service.Registrar(usuario, tipo);
                 await DisplayAlertAsync("OK", $"{tipo} registrado correctamente", "Bien");
             }
             catch (Exception ex)
@@ -45,25 +53,25 @@ namespace SLA
         {
             base.OnAppearing();
 
-            if (!SesionActual.EstaAutenticado)
+            if (!SessionService.EstaLogueado)
             {
-                await Shell.Current.GoToAsync("Login");
+                await Shell.Current.GoToAsync("//LoginPage");
                 return;
             }
-            if (SesionActual.Rol != "ADMIN")
+            if (SessionService.RolActual != Roles.Supervisor)
             {
                 HistorialButton.IsVisible = false;
             }
 
-            BienvenidaLabel.Text = $"Hola, {SesionActual.Usuario}";
+            BienvenidaLabel.Text = $"Hola, {SessionService.UsuarioActual}";
         }
         private async void OnLogoutClicked(object sender, EventArgs e)
         {
-            SesionActual.Usuario = string.Empty;
-            SesionActual.Rol = string.Empty;
+            SessionService.CerrarSesion();
+            
 
             // Reinicia la navegación y vuelve al Login
-            await Shell.Current.GoToAsync("//Login");
+            await Shell.Current.GoToAsync("//LoginPage");
         }
 
 

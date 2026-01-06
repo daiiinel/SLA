@@ -16,4 +16,9 @@
         Route="MainPage"
         ContentTemplate="{DataTemplate views:MainPage}" />
 
+    <!-- Mi dashboard bonito -->
+    <ShellContent
+    Route="DashboardPage"
+    ContentTemplate="{DataTemplate views:DashboardPage}" />
+
 </Shell>
