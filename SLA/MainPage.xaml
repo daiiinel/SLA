@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SLA.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Entry 
+                x:Name="UsuarioEntry"
+                Placeholder="Ingrese usuario o ID"
+                />
+
+            <HorizontalStackLayout Spacing="10">
+
+                <Button 
+                    Text="Inicio de sesión"
+                    Clicked="OnInicioClicked" />
+
+                <Button 
+                    Text="Cierre de sesión"
+                    Clicked="OnCierreClicked" />
+        
+                <Button Text="Ver historial"
+                    Clicked="OnVerHistorialClicked"/>
+
+
+                <CollectionView x:Name="JornadasView">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Usuario}" FontAttributes="Bold" />
+
+                                <Label Text="{Binding Inicio, StringFormat='Inicio: {0:dd/MM/yyyy HH:mm}'}" />
+
+                                <Label Text="{Binding Cierre, StringFormat='Cierre: {0:dd/MM/yyyy HH:mm}'}" />
+
+                                <Label Text="{Binding Duracion, StringFormat='Duración: {0:hh\\:mm}'}" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </HorizontalStackLayout>
+
+            <CollectionView x:Name="HistorialView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout Padding="10">
+                            <Label Text="{Binding Usuario}" FontAttributes="Bold"/>
+                            <Label Text="{Binding FechaHora}" FontSize="12"/>
+                            <Label Text="{Binding Observacion}" FontSize="12"/>
+                            <Label Text="{Binding Tipo}" FontAttributes="Bold" TextColor="Gray" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+        
+
+
+    </ScrollView>
+
+</ContentPage>

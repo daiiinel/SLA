@@ -1,0 +1,63 @@
+# Visual Studio / MAUI / .NET
+
+## Build Folders
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Visual Studio Cache / Logs
+.vs/
+*.log
+*.vspscc
+*.vssscc
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## NuGet
+*.nupkg
+packages/
+*.snupkg
+*.nuget.props
+*.nuget.targets
+
+## MacOS
+.DS_Store
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## Android / iOS / MAUI
+*.apk
+*.apks
+*.aab
+*.app
+*.xcodeproj
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata
+*.maui
+*.maui.targets.cache
+
+## Secrets / Local Configs
+appsettings.Local.json
+*.pfx
+*.key
+*.pem
+*.cer
+
+## Archivos generados por la app (no subir)
+*.json      # incluye inicios_sesion.json y otros JSON locales
+*.csv       # cualquier CSV generado localmente
+
+## Misc
+*.tmp
+*.temp
+*.cache
+*.bak
