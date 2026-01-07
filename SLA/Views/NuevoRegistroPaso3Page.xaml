@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SLA.ViewModels"
+             x:Class="SLA.Views.NuevoRegistroPaso3Page"
+             Title="Confirmación">
+
+    <ContentPage.BindingContext>
+        <vm:NuevoRegistroPaso3ViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+
+            <Label
+                Text="Confirmar registro"
+                FontSize="22"
+                FontAttributes="Bold" />
+
+            <!-- DATOS GENERALES -->
+            <Label Text="Datos generales" FontAttributes="Bold" />
+
+            <Label Text="{Binding ResumenGeneral}" />
+
+            <!-- DETALLE -->
+            <Label Text="Detalle" FontAttributes="Bold" />
+
+            <CollectionView ItemsSource="{Binding Items}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="8"
+                                Margin="0,4"
+                                StrokeThickness="0">
+                            <Label Text="{Binding Resumen}" />
+                        </Border>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- FIRMA -->
+            <Label Text="Responsable" FontAttributes="Bold" />
+            <Label Text="{Binding Operador}" />
+
+            <!-- CONFIRMAR -->
+            <Button
+                Text="Confirmar y registrar"
+                FontSize="18"
+                HeightRequest="55"
+                BackgroundColor="DarkGreen"
+                TextColor="White"
+                Command="{Binding ConfirmarCommand}" />
+
+            <Button
+                Text="Cancelar"
+                Command="{Binding CancelarCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:vm="clr-namespace:SLA.ViewModels"
+                x:Class="SLA.Views.NuevoRegistroPaso1Page"
+                Title="Nuevo registro – Paso 1">
+    
+    <ContentPage.BindingContext>
+        <vm:NuevoRegistroPaso1ViewModel />
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout>
+        <Label
+                Text="Datos generales"
+                FontSize="22"
+                FontAttributes="Bold" />
+
+        <!-- Tipo de movimiento -->
+        <Label Text="Tipo de movimiento" />
+        <Picker
+                Title="Seleccione tipo"
+                ItemsSource="{Binding TiposMovimiento}"
+                SelectedItem="{Binding TipoSeleccionado}" />
+
+        <!-- Unidad -->
+        <Label Text="Unidad / Dependencia" />
+        <Entry
+                Placeholder="Ej: Batallón X"
+                Text="{Binding Unidad}" />
+
+        <!-- Fecha -->
+        <Label Text="Fecha" />
+        <DatePicker
+                Date="{Binding Fecha}" />
+
+        <!-- Operador -->
+        <Label Text="Operador responsable" />
+        <Entry
+                IsEnabled="False"
+                Text="{Binding Operador}" />
+
+        <!-- Observaciones -->
+        <Label Text="Observaciones" />
+        <Editor
+                AutoSize="TextChanges"
+                Placeholder="Opcional"
+                Text="{Binding Observaciones}" />
+
+        <!-- continuar -->
+        <Button
+                Text="Continuar"
+                FontSize="18"
+                HeightRequest="55"
+                Command="{Binding ContinuarCommand}" />
+    </VerticalStackLayout>
+</ContentPage>

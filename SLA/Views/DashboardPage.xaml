@@ -23,8 +23,11 @@
 
         <!-- OPERADOR -->
         <Button
-            Text="Registrar arma / inventario"
-            IsVisible="{Binding IsOperador}" />
+            Text="Nuevo registro"
+            FontSize="18"
+            HeightRequest="55"
+            IsVisible="{Binding IsOperador}" 
+            Command="{Binding NuevoRegistroCommand}"/> <!--prox accion-->
 
         <!-- JEFE -->
         <Button

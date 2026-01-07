@@ -9,12 +9,11 @@ namespace SLA.ViewModels
     public partial class DashboardViewModel : ObservableObject
     {
         // Datos del usuario
+        private string usuario = string.Empty;
+        public string Usuario { get => usuario; set => SetProperty(ref usuario, value); }
 
-        [ObservableProperty]
-        private string usuario;
-
-        [ObservableProperty]
-        private string rol;
+        private string rol = string.Empty;
+        public string Rol{ get => rol; set => SetProperty(ref rol, value); }
 
         // Flags por rol
 
@@ -27,6 +26,22 @@ namespace SLA.ViewModels
         {
             Usuario = SessionService.UsuarioActual?? "Desconocido";
             Rol = SessionService.RolActual?.ToString()??"";
+        }
+
+        [RelayCommand]
+        private async Task NuevoRegistro()
+        {
+            try
+            {
+                await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso1Page));
+            }
+            catch(Exception ex)
+            {
+                var window = Application.Current?.Windows.FirstOrDefault();
+                var page = window?.Page;
+                if(page!=null)
+                    await page.DisplayAlertAsync("Error", "No se pudo cerrar sesión correctamente.\n" + ex.Message, "OK");
+            }
         }
 
         [RelayCommand]
@@ -48,7 +63,11 @@ namespace SLA.ViewModels
             catch(Exception ex)
             {
                 // por ahora mostramos algo..
-                Application.Current?.MainPage?.DisplayAlertAsync("Error", "No se pudo cerrar sesión correctamente.\n" + ex.Message, "OK" );
+                var window = Application.Current?.Windows.FirstOrDefault();
+                var page = window?.Page;
+
+                if (page != null)
+                    await page.DisplayAlertAsync("Error", "No se pudo cerrar sesión correctamente.\n" + ex.Message, "OK");
             }
             
         }
