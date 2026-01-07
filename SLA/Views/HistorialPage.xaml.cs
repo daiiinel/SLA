@@ -6,8 +6,8 @@ namespace SLA.Views
 {
     public partial class HistorialPage : ContentPage
     {
-        private readonly InicioSesionService _service = new();
-        private ObservableCollection<InicioSesion> _registros = new();
+       // private readonly InicioSesionService _service = new();
+        private ObservableCollection<Registro> _registros = new();
 
         public HistorialPage()
         {
@@ -25,7 +25,7 @@ namespace SLA.Views
         {
             _registros.Clear();
 
-            var datos = _service.ObtenerRegistros() ?? new List<InicioSesion>();
+            var datos = RegistroService.ObtenerRegistros();
 
             foreach (var r in datos)
                 _registros.Add(r);

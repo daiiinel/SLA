@@ -1,7 +1,8 @@
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SLA.Services;
+using SLA.Views;
+using System.Windows.Input;
 
 
 namespace SLA.ViewModels
@@ -71,5 +72,12 @@ namespace SLA.ViewModels
             }
             
         }
+
+        [RelayCommand]
+        async Task VerHistorial()
+        {
+            await Shell.Current.GoToAsync(nameof(HistorialPage));
+        }
+
     }
 }

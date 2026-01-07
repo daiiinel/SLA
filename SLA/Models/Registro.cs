@@ -2,10 +2,12 @@
 
 public class Registro
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime Fecha { get; set; }
     public string TipoMovimiento { get; set; } = string.Empty;
     public string Unidad { get; set; } = string.Empty;
     public string Operador { get; set; } = string.Empty;
     public string? Observaciones { get; set; }
     public List<ItemRegistro> Items { get; set; } = new();
+    public EstadoRegistro Estado { get; set; } = EstadoRegistro.Borrador;
 }

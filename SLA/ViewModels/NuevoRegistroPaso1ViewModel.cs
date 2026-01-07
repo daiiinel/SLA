@@ -24,7 +24,7 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
     public string? Observaciones { get => observaciones; set => SetProperty(ref observaciones, value); }
 
     //Listas
-    public ObservableCollection<string> TiposMovimiento { get; } = new() {"Alta", "Baja", "Traslado"};
+    public ObservableCollection<string> TiposMovimiento { get; } = new() {"Alta", "Baja", "Traslado", "Prestamo"};
 
     //Comands
     [RelayCommand]
@@ -36,6 +36,17 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
             return;
         }
 
+        RegistroActualService.CrearNuevo(operador);
+
+        var r = RegistroActualService.RegistroActual!;
+        r.TipoMovimiento = TipoSeleccionado;
+        r.Unidad = Unidad;
+        r.Fecha = Fecha;
+        r.Observaciones = Observaciones;
+
+        await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso2Page));
+
+        /*
         // Guardar estado temporal del registro
         RegistroActual.TipoMovimiento = TipoSeleccionado!;
         RegistroActual.Unidad = Unidad!;
@@ -44,6 +55,6 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
         RegistroActual.Observaciones = Observaciones;
 
         // Nos vamosh al paso 2
-        await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso2Page));
+        await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso2Page));*/
     }
 }

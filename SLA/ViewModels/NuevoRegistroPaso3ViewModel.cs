@@ -8,11 +8,11 @@ namespace SLA.ViewModels;
 
 public partial class NuevoRegistroPaso3ViewModel : ObservableObject
 {
-    public ObservableCollection<ItemRegistro> Items =>
-        RegistroActual.Items;
+    private Registro RegistroActual => RegistroActualService.RegistroActual ?? throw new InvalidOperationException("No hay registro activo");
 
-    public string Operador =>
-        RegistroActual.Operador;
+    public ObservableCollection<ItemRegistro> Items { get; }
+
+    public string Operador =>RegistroActual.Operador;
 
     public string ResumenGeneral =>
         $"Tipo: {RegistroActual.TipoMovimiento}\n" +
@@ -20,16 +20,24 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         $"Fecha: {RegistroActual.Fecha:dd/MM/yyyy}\n" +
         $"Observaciones: {RegistroActual.Observaciones ?? "-"}";
 
+    public NuevoRegistroPaso3ViewModel()
+    {
+        // Convertimos la List del modelo en obscollection para la ui
+        Items = new ObservableCollection<ItemRegistro>(RegistroActual.Items);
+    }
+
     [RelayCommand]
     private async Task Confirmar()
     {
         try
         {
-            RegistroService.GuardarRegistro();
+            RegistroActual.Items = Items.ToList();
+
+            RegistroService.GuardarRegistro(RegistroActual);
 
             await Shell.Current.DisplayAlertAsync( "OK", "Registro guardado correctamente", "Aceptar");
 
-            RegistroActual.Limpiar();
+            RegistroActualService.Limpiar();
 
             await Shell.Current.GoToAsync("//DashboardPage");
         }
@@ -47,7 +55,7 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         if (!salir)
             return;
 
-        RegistroActual.Limpiar();
+        RegistroActualService.Limpiar();
         await Shell.Current.GoToAsync("//DashboardPage");
     }
 }

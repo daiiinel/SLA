@@ -37,7 +37,8 @@
         <!-- AUDITOR -->
         <Button
             Text="Ver registros históricos"
-            IsVisible="{Binding IsAuditor}" />
+            IsVisible="{Binding IsAuditor}" 
+            Command="{Binding VerHistorialCommand}"/>
 
         <Button
             Text="Cerrar sesión"

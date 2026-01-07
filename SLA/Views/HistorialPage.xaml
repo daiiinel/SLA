@@ -16,12 +16,15 @@
         <CollectionView x:Name="HistorialView">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <VerticalStackLayout>
-                            <Label Text="{Binding Usuario}" FontAttributes="Bold" />
-                            <Label Text="{Binding FechaHora}" FontSize="12" />
-                            <Label Text="{Binding Tipo}" />
-                            <Label Text="{Binding Observacion}" FontSize="11" />
-                        </VerticalStackLayout>
+                    <Border Padding="10" Margin="5" >
+                        <VerticalStackLayout>
+                                <Label Text="{Binding Fecha}" FontAttributes="Bold" />
+                                <Label Text="{Binding TipoMovimiento}" />
+                                <Label Text="{Binding Unidad}" FontSize="12" />
+                                <Label Text="{Binding Operador}" FontSize="12" />
+                                <Label Text="{Binding Observaciones}" FontSize="11" />
+                            </VerticalStackLayout>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

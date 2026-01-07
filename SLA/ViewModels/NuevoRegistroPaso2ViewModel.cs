@@ -10,20 +10,23 @@ namespace SLA.ViewModels;
 public partial class NuevoRegistroPaso2ViewModel : ObservableObject
 {
     private string? tipoItem;
-
     public string? TipoItem { get => tipoItem; set => SetProperty(ref tipoItem, value); }
 
     private string? descripcion;
-
     public string? Descripcion { get => descripcion; set => SetProperty(ref descripcion, value); }
 
     private string? cantidad;
-
     public string? Cantidad {get => cantidad; set => SetProperty(ref cantidad, value);}
 
 
     public ObservableCollection<string> TiposItem { get; } = new() { "Arma", "Munición", "Material" };
-    public ObservableCollection<ItemRegistro> Items { get; } = RegistroActual.Items;
+    public ObservableCollection<ItemRegistro> Items { get; }
+
+    public NuevoRegistroPaso2ViewModel()
+    {
+        var registro = RegistroActualService.RegistroActual ?? throw new InvalidOperationException("No hay registro activo");
+        Items = new ObservableCollection<ItemRegistro>(registro.Items );
+    }
 
     [RelayCommand]
     private async Task AgregarItem()
