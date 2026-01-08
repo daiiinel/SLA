@@ -31,13 +31,24 @@ public partial class NuevoRegistroPaso2ViewModel : ObservableObject
     [RelayCommand]
     private async Task AgregarItem()
     {
-        if (string.IsNullOrWhiteSpace(TipoItem) || string.IsNullOrWhiteSpace(Descripcion) || !int.TryParse(Cantidad, out int cant) || cant <= 0)
+        //validaciones mas claras (siempre pensanding en el user dea)
+        if (string.IsNullOrWhiteSpace(TipoItem))
         {
-            await Shell.Current.DisplayAlertAsync( "Error", "Datos inválidos", "OK");
+            await Shell.Current.DisplayAlertAsync( "Falta información", "Seleccione el tipo de item..", "OK");
+            return;
+        }
+        if(string.IsNullOrWhiteSpace(Descripcion))
+        {
+            await Shell.Current.DisplayAlertAsync("Falta información","Ingrese una descripción","OK");
+            return;
+        }
+        if(!int.TryParse(Cantidad, out int cant) || cant <= 0)
+        {
+            await Shell.Current.DisplayAlertAsync("Cantidad inválida","Ingrese una cantidad válida.. (mayor a 0)","OK");
             return;
         }
 
-        Items.Add(new ItemRegistro{ Tipo = TipoItem!, Descripcion = Descripcion!, Cantidad = cant});
+        Items.Add(new ItemRegistro{ Tipo = TipoItem, Descripcion = Descripcion, Cantidad = cant});
 
         // limpiar
         TipoItem = null;

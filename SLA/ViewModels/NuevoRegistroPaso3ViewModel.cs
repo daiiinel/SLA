@@ -10,7 +10,8 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
 {
     private Registro RegistroActual => RegistroActualService.RegistroActual ?? throw new InvalidOperationException("No hay registro activo");
 
-    public ObservableCollection<ItemRegistro> Items { get; }
+    //con el new step  2, no es necesario crear otra collect, sino q solo mostramos lo q ya  existe (la cabecitah explotó)
+    public ObservableCollection<ItemRegistro> Items => RegistroActual.Items; 
 
     public string Operador =>RegistroActual.Operador;
 
@@ -20,18 +21,18 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         $"Fecha: {RegistroActual.Fecha:dd/MM/yyyy}\n" +
         $"Observaciones: {RegistroActual.Observaciones ?? "-"}";
 
-    public NuevoRegistroPaso3ViewModel()
+    /*public NuevoRegistroPaso3ViewModel()
     {
         // Convertimos la List del modelo en obscollection para la ui
         Items = new ObservableCollection<ItemRegistro>(RegistroActual.Items);
-    }
+    }*/
 
     [RelayCommand]
     private async Task Confirmar()
     {
         try
         {
-            RegistroActual.Items = Items.ToList();
+           // RegistroActual.Items = Items.ToList(); //ahora no necesario
 
             RegistroService.GuardarRegistro(RegistroActual);
 

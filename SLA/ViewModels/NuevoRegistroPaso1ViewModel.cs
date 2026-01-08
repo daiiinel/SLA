@@ -17,7 +17,7 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
     private DateTime fecha = DateTime.Today;
     public DateTime Fecha { get => fecha; set => SetProperty(ref fecha, value); }
 
-    private string operador = SessionService.UsuarioActual;
+    private string operador = String.Empty;
     public string Operador { get => operador; set => SetProperty(ref operador, value); }
 
     private string? observaciones;
@@ -26,13 +26,25 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
     //Listas
     public ObservableCollection<string> TiposMovimiento { get; } = new() {"Alta", "Baja", "Traslado", "Prestamo"};
 
+    public NuevoRegistroPaso1ViewModel()
+    {
+        Operador = SessionService.UsuarioActual; //pa q se ejecute cuando entre a la pantalla, no en el viewmodel
+    }
+
+
     //Comands
     [RelayCommand]
     private async Task Continuar()
     {
-        if (string.IsNullOrWhiteSpace(TipoSeleccionado) || string.IsNullOrWhiteSpace(Unidad))
+        //Mensajes mas claros (se supone q el principal user sera un soldadito)
+        if (string.IsNullOrWhiteSpace(TipoSeleccionado))
         {
-            await Shell.Current.DisplayAlertAsync("Error","Complete los campos obligatorios", "OK");
+            await Shell.Current.DisplayAlertAsync("Falta información","Debe seleccionar el tipo de movimiento..", "OK");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(Unidad))
+        {
+            await Shell.Current.DisplayAlertAsync("Falta información","Debe ingresar la unidad o dependencia..","OK");
             return;
         }
 
