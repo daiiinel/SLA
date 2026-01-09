@@ -8,11 +8,17 @@ namespace SLA.Views
     {
        // private readonly InicioSesionService _service = new();
         private ObservableCollection<Registro> _registros = new();
+        private List<Registro> _todosLosRegistros = new();
 
         public HistorialPage()
         {
             InitializeComponent();
             HistorialView.ItemsSource = _registros;
+
+            //llenamos el picker
+            TipoFiltroPicker.ItemsSource = new List<string> { "Todos", "Alta", "Baja", "Traslado", "Prestamo" };
+
+            TipoFiltroPicker.SelectedIndex = 0;
         }
 
         protected override void OnAppearing()
@@ -25,11 +31,35 @@ namespace SLA.Views
         {
             _registros.Clear();
 
-            var datos = RegistroService.ObtenerRegistros();
+            _todosLosRegistros = RegistroService.ObtenerRegistros();
 
-            foreach (var r in datos)
+            AplicarFiltros();
+        }
+
+        private void AplicarFiltros()
+        {
+            _registros.Clear();
+
+            var filtrados = _todosLosRegistros.AsEnumerable();
+
+            // filtro por tipo
+            var tipo = TipoFiltroPicker.SelectedItem?.ToString();
+            if (!string.IsNullOrWhiteSpace(tipo) && tipo != "Todos")
+                filtrados = filtrados.Where(r => r.TipoMovimiento == tipo);
+
+            // filtro por fecha
+            var desde = FechaDesdePicker.Date;
+            var hasta = FechaHastaPicker.Date;
+
+            filtrados = filtrados.Where(r => r.Fecha.Date >= desde && r.Fecha.Date <= hasta);
+
+            foreach (var r in filtrados)
                 _registros.Add(r);
         }
 
+        private void OnFiltroChanged(object sender, EventArgs e)
+        {
+            AplicarFiltros();
+        }
     }
 }

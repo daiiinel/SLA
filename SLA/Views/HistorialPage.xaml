@@ -13,12 +13,45 @@
             FontAttributes="Bold"
             HorizontalOptions="Center" />
 
+        <!--Filtros (optimizar luego) -->
+        <Label  Text="Filtrar por:"
+                FontSize="16"
+                FontAttributes="Bold"
+                Margin="0,10,0,5" />
+
+        <VerticalStackLayout Spacing="8">
+            <HorizontalStackLayout Spacing="10"> <!--Tipo-->
+                <Label  Text="Tipo:"
+                        WidthRequest="60"
+                        VerticalTextAlignment="Center" />
+                <Picker x:Name="TipoFiltroPicker"
+                        ItemsSource="{Binding TiposMovimiento}"
+                        Title="Todos" 
+                        SelectedIndexChanged="OnFiltroChanged"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="10"> <!--Desde-->
+                <Label  Text="Desde:"
+                        WidthRequest="60"
+                        VerticalTextAlignment="Center" />
+                <DatePicker x:Name="FechaDesdePicker" />
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout Spacing="10"> <!--Hasta-->
+                <Label  Text="Hasta:"
+                        WidthRequest="60"
+                        VerticalTextAlignment="Center" />
+                <DatePicker x:Name="FechaHastaPicker" />
+            </HorizontalStackLayout>
+            
+        </VerticalStackLayout>
+
         <CollectionView x:Name="HistorialView">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="10" Margin="5" >
                         <VerticalStackLayout>
-                                <Label Text="{Binding Fecha}" FontAttributes="Bold" />
+                            <Label Text="{Binding Fecha, StringFormat='{}{0:dd/MM/yyyy}'}" FontAttributes="Bold" />
                                 <Label Text="{Binding TipoMovimiento}" />
                                 <Label Text="{Binding Unidad}" FontSize="12" />
                                 <Label Text="{Binding Operador}" FontSize="12" />
