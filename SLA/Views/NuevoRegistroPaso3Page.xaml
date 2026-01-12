@@ -5,9 +5,9 @@
              x:Class="SLA.Views.NuevoRegistroPaso3Page"
              Title="Confirmación">
 
-    <ContentPage.BindingContext>
+    <!--<ContentPage.BindingContext>
         <vm:NuevoRegistroPaso3ViewModel />
-    </ContentPage.BindingContext>
+    </ContentPage.BindingContext>-->
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="12">

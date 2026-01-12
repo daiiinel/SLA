@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SLA.ViewModels"
+             x:Class="SLA.Views.RevisionRegistrosPage"
+             Title="Registros pendientes">
+
+    <ContentPage.BindingContext>
+        <viewModels:RevisionRegistroViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="*,Auto" Padding="10">
+
+        <CollectionView Grid.Row="0"
+                        ItemsSource="{Binding RegistrosEnviados}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding RegistroSeleccionado}">
+            <CollectionView.EmptyView>
+                <Label Text="No hay registros enviados para revisar."
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Opacity="0.6" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="6" Padding="10" StrokeShape="RoundRectangle 10">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="{Binding TipoMovimiento}" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="{Binding Unidad}" FontSize="14" />
+                            <Label Text="{Binding Operador}" FontSize="13" Opacity="0.7" />
+                            <Label Text="{Binding Fecha, StringFormat='{}{0:dd/MM/yyyy HH:mm}'}" FontSize="12" Opacity="0.6" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <VerticalStackLayout Grid.Row="1" Spacing="15" Padding="15" 
+                     BackgroundColor="#F0F0F0">
+            <VerticalStackLayout.Triggers>
+                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding RegistroSeleccionado}" Value="{x:Null}">
+                    <Setter Property="IsVisible" Value="False" />
+                </DataTrigger>
+            </VerticalStackLayout.Triggers>
+
+            <Label Text="RESUMEN DE CARGA" 
+           TextColor="#333333"
+           FontAttributes="Bold" 
+           FontSize="16" />
+
+            <Border Stroke="#CCCCCC" StrokeThickness="1" BackgroundColor="White" Padding="10" StrokeShape="RoundRectangle 8">
+                <CollectionView ItemsSource="{Binding RegistroSeleccionado.Items}" HeightRequest="120">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="40, *" Padding="5">
+                                <Label Grid.Column="0" 
+                               Text="{Binding Cantidad}" 
+                               TextColor="{StaticResource Primary}"
+                               FontAttributes="Bold" 
+                               FontSize="14" 
+                               VerticalOptions="Center"/>
+                                <Label Grid.Column="1" 
+                               Text="{Binding Descripcion}" 
+                               TextColor="Black"
+                               FontSize="14" 
+                               VerticalOptions="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Border>
+
+            <Entry Placeholder="Observación (obligatoria para rechazar)" 
+           Text="{Binding Observacion}"
+           BackgroundColor="White"
+           TextColor="Black"
+           HeightRequest="45"/>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                <Button Grid.Column="0" 
+                Text="APROBAR" 
+                BackgroundColor="#2E7D32" 
+                TextColor="White" 
+                FontAttributes="Bold"
+                Command="{Binding AprobarCommand}" />
+
+                <Button Grid.Column="1" 
+                Text="RECHAZAR" 
+                BackgroundColor="#C62828" 
+                TextColor="White" 
+                FontAttributes="Bold"
+                Command="{Binding RechazarCommand}" />
+            </Grid>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

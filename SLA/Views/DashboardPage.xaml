@@ -31,8 +31,9 @@
 
         <!-- JEFE -->
         <Button
-            Text="Consultar reportes"
-            IsVisible="{Binding IsJefe}" />
+            Text="Revisar registros enviados"
+            IsVisible="{Binding IsJefe}" 
+            Command="{Binding RevisarRegistrosCommand}"/>
 
         <!-- AUDITOR -->
         <Button

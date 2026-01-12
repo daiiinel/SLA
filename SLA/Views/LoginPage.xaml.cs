@@ -41,6 +41,13 @@ public partial class LoginPage : ContentPage
         SessionService.IniciarSesion(usuario, rol);
 
         //navegación
-        await Shell.Current.GoToAsync("//DashboardPage");
+        try
+        {
+            await Shell.Current.GoToAsync("///DashboardPage"); // resetea la pila de nav
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error de Navegación", ex.Message, "OK");
+        }
     }
 }

@@ -46,7 +46,9 @@
             
         </VerticalStackLayout>
 
-        <CollectionView x:Name="HistorialView">
+        <CollectionView x:Name="HistorialView"
+                        SelectionMode="Single"
+                        SelectionChanged="OnRegistroSeleccionado">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="10" Margin="5" >

@@ -14,19 +14,35 @@ namespace SLA.ViewModels
         public string Usuario { get => usuario; set => SetProperty(ref usuario, value); }
 
         private string rol = string.Empty;
-        public string Rol{ get => rol; set => SetProperty(ref rol, value); }
+        public string Rol{ get => rol; set => SetProperty(ref rol, value); } //eliminable?¿
 
-        // Flags por rol
+        private Roles? _rolActual;
+        public Roles? RolActual
+        {
+            get => _rolActual;
+            set
+            {
+                if (SetProperty(ref _rolActual, value))
+                {
+                    OnPropertyChanged(nameof(IsOperador));
+                    OnPropertyChanged(nameof(IsJefe));
+                    OnPropertyChanged(nameof(IsAuditor));
+                }
+            }
+        }
 
-        public bool IsOperador => SessionService.RolActual == Roles.Operador;
-        public bool IsJefe => SessionService.RolActual == Roles.Supervisor;
-        public bool IsAuditor => SessionService.RolActual == Roles.Auditor;
+        // Flags por rol -> independientes del sservice y dependientes del vmodel
+
+        public bool IsOperador => RolActual == Roles.Operador;
+        public bool IsJefe => RolActual == Roles.Supervisor;
+        public bool IsAuditor => RolActual == Roles.Auditor;
 
         // Constructor
         public DashboardViewModel()
         {
             Usuario = SessionService.UsuarioActual?? "Desconocido";
-            Rol = SessionService.RolActual?.ToString()??"";
+            RolActual = SessionService.RolActual;
+            Rol = RolActual?.ToString()??"";
         }
 
         [RelayCommand]
@@ -63,7 +79,6 @@ namespace SLA.ViewModels
             }
             catch(Exception ex)
             {
-                // por ahora mostramos algo..
                 var window = Application.Current?.Windows.FirstOrDefault();
                 var page = window?.Page;
 
@@ -79,5 +94,19 @@ namespace SLA.ViewModels
             await Shell.Current.GoToAsync(nameof(HistorialPage));
         }
 
+        [RelayCommand]
+        async Task RevisarRegistros()
+        {
+            try
+            {
+                await Shell.Current.GoToAsync(nameof(RevisionRegistrosPage));
+            }
+            catch (Exception ex)
+            {
+                var page = Application.Current?.Windows.FirstOrDefault()?.Page;
+                if (page != null)
+                    await page.DisplayAlertAsync( "Error", ex.Message, "OK");
+            }
+        }
     }
 }

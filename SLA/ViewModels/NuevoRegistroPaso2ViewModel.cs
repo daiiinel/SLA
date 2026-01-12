@@ -25,7 +25,10 @@ public partial class NuevoRegistroPaso2ViewModel : ObservableObject
     public NuevoRegistroPaso2ViewModel()
     {
         var registro = RegistroActualService.RegistroActual ?? throw new InvalidOperationException("No hay registro activo");
-        Items = new ObservableCollection<ItemRegistro>(registro.Items );
+
+        // igualamos referencias..
+        // ahora Items en el vm es la misma lista que en el reg.cs
+        Items = registro.Items;
     }
 
     [RelayCommand]
@@ -63,7 +66,21 @@ public partial class NuevoRegistroPaso2ViewModel : ObservableObject
             await Shell.Current.DisplayAlertAsync( "Error", "Debe agregar al menos un ítem", "OK");
             return;
         }
-        //pasho 3
-        await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso3Page));
+        try
+        {
+            //pasho 3
+            await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso3Page));
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
+        }
+    }
+
+    [RelayCommand]
+    private void EliminarItem(ItemRegistro item)
+    {
+        if (Items.Contains(item))
+            Items.Remove(item);
     }
 }

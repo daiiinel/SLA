@@ -24,16 +24,25 @@ namespace SLA.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            CargarHistorial();
+            _ = CargarHistorialAsync(); //_= disparador las tasks¿
         }
 
-        private void CargarHistorial()
+        private async Task CargarHistorialAsync()
         {
-            _registros.Clear();
+            try
+            {
+                _registros.Clear();
+                _todosLosRegistros = await RegistroStorageService.ObtenerTodosAsync();
 
-            _todosLosRegistros = RegistroService.ObtenerRegistros();
+                AplicarFiltros();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlertAsync("Error",  $"No se pudo cargar el historial\n {ex.Message}", "Aceptar");
 
-            AplicarFiltros();
+                // opcional: loguear el error para auditoría
+                System.Diagnostics.Debug.WriteLine($"Error en Historial: {ex}");
+            }
         }
 
         private void AplicarFiltros()
@@ -60,6 +69,19 @@ namespace SLA.Views
         private void OnFiltroChanged(object sender, EventArgs e)
         {
             AplicarFiltros();
+        }
+
+        private async void OnRegistroSeleccionado(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.FirstOrDefault() is not Registro seleccionado)
+                return;
+
+            RegistroActualService.RegistroActual = seleccionado;
+
+            // navegamos (sin pasar parámetros para no ensuciar la url ni fallar en la serialización)
+            await Shell.Current.GoToAsync(nameof(DetalleRegistroPage));
+
+            ((CollectionView)sender).SelectedItem = null;
         }
     }
 }

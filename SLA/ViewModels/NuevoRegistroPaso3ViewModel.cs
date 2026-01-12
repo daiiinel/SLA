@@ -11,7 +11,9 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
     private Registro RegistroActual => RegistroActualService.RegistroActual ?? throw new InvalidOperationException("No hay registro activo");
 
     //con el new step  2, no es necesario crear otra collect, sino q solo mostramos lo q ya  existe (la cabecitah explotó)
-    public ObservableCollection<ItemRegistro> Items => RegistroActual.Items; 
+    public ObservableCollection<ItemRegistro> Items => RegistroActual.Items;
+
+    private readonly IPrintService _printService;
 
     public string Operador =>RegistroActual.Operador;
 
@@ -21,30 +23,43 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         $"Fecha: {RegistroActual.Fecha:dd/MM/yyyy}\n" +
         $"Observaciones: {RegistroActual.Observaciones ?? "-"}";
 
-    /*public NuevoRegistroPaso3ViewModel()
+    public NuevoRegistroPaso3ViewModel(IPrintService printService)
     {
-        // Convertimos la List del modelo en obscollection para la ui
-        Items = new ObservableCollection<ItemRegistro>(RegistroActual.Items);
-    }*/
+        // lo recibimos en el constr y nuestro maui lo inyecta solito¿
+        _printService = printService;
+    }
 
     [RelayCommand]
     private async Task Confirmar()
     {
         try
         {
-           // RegistroActual.Items = Items.ToList(); //ahora no necesario
+            // estado final del envio
+            RegistroActual.Estado = EstadoRegistro.Enviado;
+            RegistroActual.Fecha = DateTime.Now;
 
-            RegistroService.GuardarRegistro(RegistroActual);
+            //RegistroService.GuardarRegistro(RegistroActual);
+            // guardo un solo serv (guardaba en 2 por boludita)
+            await RegistroStorageService.GuardarAsync(RegistroActual);
 
-            await Shell.Current.DisplayAlertAsync( "OK", "Registro guardado correctamente", "Aceptar");
+            await Shell.Current.DisplayAlertAsync("OK", "Registro guardado correctamente", "Aceptar");
+
+
+            // preguntar si quiere ver el pdf
+            bool verPdf = await Shell.Current.DisplayAlertAsync("Éxito", "Guardado, ¿desea generar el comprobante PDF?", "Si", "No");
+
+            if (verPdf)
+            {
+                string html = PDFService.GenerarHtmlResumen(RegistroActual);
+                _printService.PrintHtml(html);
+            }
 
             RegistroActualService.Limpiar();
-
             await Shell.Current.GoToAsync("//DashboardPage");
         }
         catch (Exception ex)
         {
-            await Shell.Current.DisplayAlertAsync( "Error", ex.Message,"OK");
+            await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
         }
     }
 

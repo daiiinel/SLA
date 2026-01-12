@@ -11,17 +11,18 @@
         Route="Login"
         ContentTemplate="{DataTemplate views:LoginPage}" />
 
+    <!-- Mi dashboard bonito -->
+    <ShellContent
+        Route="DashboardPage"
+        ContentTemplate="{DataTemplate views:DashboardPage}" />
+
     <!-- Página principal (post-login) -->
     <ShellContent
         Route="MainPage"
         ContentTemplate="{DataTemplate views:MainPage}" />
 
-    <!-- Mi dashboard bonito -->
-    <ShellContent
-    Route="DashboardPage"
-    ContentTemplate="{DataTemplate views:DashboardPage}" />
-
-    <!--Pages pa mi operador (user:admin contra:123)-->
+    
+    <!--
     <ShellContent
     Route="NuevoRegistroPaso1Page"
     ContentTemplate="{DataTemplate views:NuevoRegistroPaso1Page}" />
@@ -30,6 +31,6 @@
     ContentTemplate="{DataTemplate views:NuevoRegistroPaso2Page}" />
     <ShellContent
     Route="NuevoRegistroPaso3Page"
-    ContentTemplate="{DataTemplate views:NuevoRegistroPaso3Page}" />
+    ContentTemplate="{DataTemplate views:NuevoRegistroPaso3Page}" />-->
 
 </Shell>

@@ -3,7 +3,7 @@ using SLA.Models;
 using SLA.Views;
 
 
-namespace SLA
+namespace SLA.Views
 {
     public partial class MainPage : ContentPage
     {

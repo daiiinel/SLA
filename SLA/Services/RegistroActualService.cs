@@ -4,7 +4,7 @@ namespace SLA.Services;
 
 public static class RegistroActualService
 {
-    public static Registro? RegistroActual { get; private set; }
+    public static Registro? RegistroActual { get; set; }
 
     public static void CrearNuevo(string operador)
     {

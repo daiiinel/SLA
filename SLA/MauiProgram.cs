@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using SLA.Services;
+using SLA.ViewModels;
+using SLA.Views;
 
 namespace SLA
 {
@@ -13,9 +16,13 @@ namespace SLA
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
+#if ANDROID
+            builder.Services.AddTransient<IPrintService, SLA.Platforms.Android.AndroidPrintService>();
 #endif
+            builder.Services.AddTransient<ViewModels.NuevoRegistroPaso3ViewModel>();
+            builder.Services.AddTransient<Views.NuevoRegistroPaso3Page>();
+            builder.Services.AddTransient<RevisionRegistroViewModel>();
+            builder.Services.AddTransient<RevisionRegistrosPage>();
             return builder.Build();
         }
     }
