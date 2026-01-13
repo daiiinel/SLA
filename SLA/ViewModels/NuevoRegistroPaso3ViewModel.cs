@@ -50,7 +50,7 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
 
             if (verPdf)
             {
-                string html = PDFService.GenerarHtmlResumen(RegistroActual);
+                string html = await PDFService.GenerarHtmlResumen(RegistroActual);
                 _printService.PrintHtml(html);
             }
 
