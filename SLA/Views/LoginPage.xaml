@@ -3,30 +3,75 @@
     x:Class="SLA.Views.LoginPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Iniciar sesión">
+    BackgroundColor="#1a1c1e"
+    NavigationPage.HasNavigationBar="False">
 
-    <VerticalStackLayout
-        Padding="30"
-        Spacing="15"
-        VerticalOptions="Center">
+    <ContentPage.Resources>
+        <Style TargetType="Entry">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="PlaceholderColor" Value="#8e9196"/>
+            <Setter Property="BackgroundColor" Value="#2c2f33"/>
+            <Setter Property="HeightRequest" Value="50"/>
+        </Style>
+    </ContentPage.Resources>
 
-        <Label
-            Text="Bienvenido"
-            FontSize="24"
-            HorizontalOptions="Center" />
+    <Grid>
+        <ScrollView VerticalOptions="Center">
+            <!--el max Width hace q no se deforme al ejecutar en otros dispositivos :b-->
+            <VerticalStackLayout Padding="30" Spacing="0" MaximumWidthRequest="450">
+                <Border Stroke="#454b52" StrokeThickness="2" StrokeShape="RoundRectangle 10"
+                    BackgroundColor="#2c2f33" Padding="20" Margin="0,0,0,30"
+                    HorizontalOptions="Center">
+                    <Label  Text="SLA" TextColor="#a8c7fa"
+                        FontSize="32" FontAttributes="Bold"
+                        CharacterSpacing="6"/>
+                </Border>
 
-        <Entry
-            x:Name="UsuarioEntry"
-            Placeholder="Usuario" />
+                <Label Text="Sistema de logística automatizado" TextColor="#a8c7fa"
+                   FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,5"/>
+                <Label Text="Autenticación requerida" TextColor="#8e9196"
+                   FontSize="11" HorizontalOptions="Center" Margin="0,0,0,30" CharacterSpacing="2"/>
 
-        <Entry
-            x:Name="PasswordEntry"
-            Placeholder="Contraseña"
-            IsPassword="True" />
+                <VerticalStackLayout Spacing="15">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Identificacion del usuario" TextColor="#8e9196"
+                           FontSize="10" FontAttributes="Bold" Margin="5,0"/>
+                        <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" Padding="10,0">
+                            <!--ID de soldado o DNI/CUIT? preguntar luego (por el tema de jefe y auditores)-->
+                            <Entry  x:Name="UsuarioEntry"
+                                Placeholder="Ingrese ID" 
+                                Keyboard="Text"/>
+                        </Border>
+                    </VerticalStackLayout>
 
-        <Button
-            Text="Ingresar"
-            Clicked="OnLoginClicked" />
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Clave de acceso" TextColor="#8e9196"
+                           FontSize="10" FontAttributes="Bold" Margin="5,0"/>
+                        <Border Stroke="#454b52" StrokeShape="RoundRectangle 5" Padding="5,0">
+                            <Entry  x:Name="PasswordEntry"
+                                Placeholder="Contraseña"
+                                IsPassword="True" />
+                        </Border>
+                    </VerticalStackLayout>
 
-    </VerticalStackLayout>
+                    <Button Text="Acceder al sistema" Clicked="OnLoginClicked" 
+                        BackgroundColor="#a8c7fa" TextColor="#1a1c1e"
+                        FontAttributes="Bold" CornerRadius="4"
+                        HeightRequest="55" Margin="0,20,0,0"/>
+                </VerticalStackLayout>
+
+                <Label Text="Versión 2026.01 - Acceso restringido" TextColor="#454b52"
+                   FontSize="10" HorizontalOptions="Center" Margin="0,40,0,0"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>
+
+<!-- bases:
+    #1a1c1e -> gris carbon, fondo
+    #a8c7fa -> azul acero, color de textos
+    #8e9196 -> gris medio, textos secundarios
+ 
+    bordes con StrokeShape="RoundRectangle 5"
+    -->

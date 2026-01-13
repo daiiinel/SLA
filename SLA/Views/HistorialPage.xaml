@@ -3,66 +3,126 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="SLA.Views.HistorialPage"
-    Title="Historial de Sesiones">
+    BackgroundColor="#1a1c1e"
+    Title="Log de operaciones">
 
-    <VerticalStackLayout Padding="20" Spacing="10">
+    <Grid RowDefinitions="Auto, *" Padding="20">
 
-        <Label
-            Text="Historial"
-            FontSize="22"
-            FontAttributes="Bold"
-            HorizontalOptions="Center" />
+        <Border Grid.Row="0" BackgroundColor="#2c2f33"
+                Stroke="#454b52" StrokeShape="RoundRectangle 8"
+                Padding="15" Margin="0,0,0,15">
 
-        <!--Filtros (optimizar luego) -->
-        <Label  Text="Filtrar por:"
-                FontSize="16"
-                FontAttributes="Bold"
-                Margin="0,10,0,5" />
 
-        <VerticalStackLayout Spacing="8">
-            <HorizontalStackLayout Spacing="10"> <!--Tipo-->
-                <Label  Text="Tipo:"
-                        WidthRequest="60"
-                        VerticalTextAlignment="Center" />
-                <Picker x:Name="TipoFiltroPicker"
-                        ItemsSource="{Binding TiposMovimiento}"
-                        Title="Todos" 
-                        SelectedIndexChanged="OnFiltroChanged"/>
-            </HorizontalStackLayout>
+            <VerticalStackLayout Spacing="10">
 
-            <HorizontalStackLayout Spacing="10"> <!--Desde-->
-                <Label  Text="Desde:"
-                        WidthRequest="60"
-                        VerticalTextAlignment="Center" />
-                <DatePicker x:Name="FechaDesdePicker" />
-            </HorizontalStackLayout>
+                <Label
+                    Text="Parámetros de búsqueda" TextColor="#a8c7fa"
+                    FontSize="11" FontAttributes="Bold"
+                    CharacterSpacing="2" Margin="0,0,0,5"/>
 
-            <HorizontalStackLayout Spacing="10"> <!--Hasta-->
-                <Label  Text="Hasta:"
-                        WidthRequest="60"
-                        VerticalTextAlignment="Center" />
-                <DatePicker x:Name="FechaHastaPicker" />
-            </HorizontalStackLayout>
-            
-        </VerticalStackLayout>
+                <!--Filtros (update: optimizado con los benditos triggers, pero siempre se puede mejorar..¿) -->
 
-        <CollectionView x:Name="HistorialView"
-                        SelectionMode="Single"
-                        SelectionChanged="OnRegistroSeleccionado">
+                <Grid ColumnDefinitions="80,*">
+
+                    <Label Grid.Column="0" Text="Tipo:" TextColor="#8e9196"
+                           FontSize="12" FontAttributes="Bold"
+                           VerticalOptions="Center"/>
+                    <Border Grid.Column="1" Stroke="#454b52" StrokeShape="RoundRectangle 4" Padding="5,0" BackgroundColor="#1a1c1e">
+                        <Picker x:Name="TipoFiltroPicker"
+                                        ItemsSource="{Binding TiposMovimiento}"
+                                        Title="Seleccionar" 
+                                        SelectedIndexChanged="OnFiltroChanged"
+                                        TextColor="White" TitleColor="#8e9196"/>
+                    </Border>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+
+                    <VerticalStackLayout Grid.Column="0" Spacing="5">
+                        <!--Desde-->
+                        <Label  Text="Desde:" TextColor="#8e9196"
+                                FontSize="10" FontAttributes="Bold"/>
+                        <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" BackgroundColor="#1a1c1e">
+                            <DatePicker x:Name="FechaDesdePicker" TextColor="White" Format="dd/MM/yyyy"/>
+                        </Border>
+                    </VerticalStackLayout>
+
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="5">
+                        <!--Hasta-->
+                        <Label  Text="Hasta:" TextColor="#8e9196"
+                                FontSize="10" FontAttributes="Bold"/>
+                        <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" BackgroundColor="#1a1c1e">
+                            <DatePicker x:Name="FechaHastaPicker" TextColor="White" Format="dd/MM/yyyy"/>
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+
+        </Border>
+
+        <CollectionView     Grid.Row="1"
+                            x:Name="HistorialView"
+                            SelectionMode="Single"
+                            SelectionChanged="OnRegistroSeleccionado">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="10" Margin="5" >
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Fecha, StringFormat='{}{0:dd/MM/yyyy}'}" FontAttributes="Bold" />
-                                <Label Text="{Binding TipoMovimiento}" />
-                                <Label Text="{Binding Unidad}" FontSize="12" />
-                                <Label Text="{Binding Operador}" FontSize="12" />
-                                <Label Text="{Binding Observaciones}" FontSize="11" />
+                    <Border Padding="15" Margin="0,0,0,10"
+                                BackgroundColor="#24272b"
+                                Stroke="#454b52" StrokeShape="RoundRectangle 5">
+
+                        <Grid ColumnDefinitions="auto, *,auto" ColumnSpacing="15">
+
+                            <Border Grid.Column="0" WidthRequest="4" VerticalOptions="Fill" BackgroundColor="Gray">
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding Estado}" Value="Enviado">
+                                        <Setter Property="BackgroundColor" Value="Orange" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Border" Binding="{Binding Estado}" Value="Aprobado">
+                                        <Setter Property="BackgroundColor" Value="#2E7D32" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Border" Binding="{Binding Estado}" Value="Rechazado">
+                                        <Setter Property="BackgroundColor" Value="#C62828" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center">
+                                <Label Text="{Binding Fecha, StringFormat='{0:dd MMM}'}" TextColor="White" FontSize="12" FontAttributes="Bold" HorizontalOptions="End"/>
+                                <Label Text="{Binding Estado}" FontSize="10" FontAttributes="Bold" HorizontalOptions="End">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Estado}" Value="Enviado">
+                                            <Setter Property="TextColor" Value="Orange" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Estado}" Value="Aprobado">
+                                            <Setter Property="TextColor" Value="#2E7D32" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Estado}" Value="Rechazado">
+                                            <Setter Property="TextColor" Value="#C62828" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
                             </VerticalStackLayout>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
+
+<!-- bases:
+    #1a1c1e -> gris carbon, fondo
+    #a8c7fa -> azul acero, color de textos
+    #8e9196 -> gris medio, textos secundarios
+ 
+    #2c2f33 -> fondo oscuro, contenedores
+    #c62828 -> rojo oscurito,  cerrar sesion y demás
+    #2e7d32 -> verde aprobacion, para cosas buenas ahr
+    
+    
+    bordes con StrokeShape="RoundRectangle 5"
+    
+    uso de triggers ("mi led") para cambir el EstadoColor dependiendo lo q suceda con el reg automáticamente (gracias bbdd)
+    -->

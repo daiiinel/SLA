@@ -2,69 +2,98 @@
 <ContentPage  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               x:Class="SLA.Views.DetalleRegistroPage"
-              Title="Resumen del formulario">
+              BackgroundColor="#1a1c1e"
+              Title="Reporte técnicp">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="PDF" Clicked="OnExportarPdfClicked">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="OpenSansSemibold" Glyph=" " Color="White"/>
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
+        <ToolbarItem Text="PDF" Clicked="OnExportarPdfClicked"/>
     </ContentPage.ToolbarItems>
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Border BackgroundColor="{StaticResource Primary}" Padding="15">
-                <VerticalStackLayout>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Border BackgroundColor="#2c2f33" Padding="20"
+                    Stroke="#a8c7fa" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                <VerticalStackLayout Spacing="5">
                     <Label  Text="{Binding TipoMovimiento}"
-                            TextColor="White" FontSize="24" FontAttributes="Bold" />
-                    <Label Text="{Binding Fecha, StringFormat='{}{0:dd/MM/yyyy HH:mm}'}" 
-                           TextColor="White" Opacity="0.9"/>
+                            TextColor="White" FontSize="26" FontAttributes="Bold" />
+                    <Label Text="{Binding Fecha, StringFormat='Fecha/hora: {0:dd/MM/yyyy HH:mm}'}" 
+                           TextColor="#a8c7fa" Opacity="0.9" FontSize="12" FontAttributes="Bold"/>
                 </VerticalStackLayout>
             </Border>
 
-            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto, Auto" ColumnSpacing="10" RowSpacing="10">
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto, Auto" ColumnSpacing="15" RowSpacing="20">
                 <VerticalStackLayout Grid.Row="0" Grid.Column="0">
-                    <Label  Text="UNIDAD:"  FontSize="12" FontAttributes="Bold" Opacity="0.6"/>
-                    <Label Text="{Binding Unidad}" FontSize="16" />
+                    <Label  Text="UNIDAD:" TextColor="#8e9196" FontSize="10" FontAttributes="Bold" CharacterSpacing="1"/>
+                    <Label Text="{Binding Unidad}" 
+                           TextColor="White" FontSize="16" FontAttributes="Bold"/>
                 </VerticalStackLayout>
                 
                 <VerticalStackLayout Grid.Row="0" Grid.Column="1">
-                    <Label  Text="OPERADOR:"  FontSize="12" FontAttributes="Bold" Opacity="0.6"/>
-                    <Label Text="{Binding Operador}" FontSize="16" />
+                    <Label  Text="RESPONSABLE:" TextColor="#8e9196" FontSize="10" FontAttributes="Bold" CharacterSpacing="1"/>
+                    <Label Text="{Binding Operador}" 
+                           TextColor="White" FontSize="16" FontAttributes="Bold"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Grid.Row="1" Grid.Column="0">
-                    <Label  Text="ESTADO:"  FontSize="12" FontAttributes="Bold" Opacity="0.6"/>
-                    <Label Text="{Binding Estado}" FontSize="16" />
+                    <Label  Text="ESTADO ACTUAL:" TextColor="#8e9196"  FontSize="10" FontAttributes="Bold" CharacterSpacing="1"/>
+
+                    <HorizontalStackLayout Spacing="8" Margin="0,5,0,0">
+                        <Border x:Name="StatusIndicator"
+                                HeightRequest="12" WidthRequest="12"
+                                StrokeShape="RoundRectangle 6" BackgroundColor="Gray">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding Stado}" Value="Enviado">
+                                    <Setter Property="BackgroundColor" Value="Orange"/>
+                                </DataTrigger>
+
+                                <DataTrigger TargetType="Border" Binding="{Binding Stado}" Value="Aprobado">
+                                    <Setter Property="BackgroundColor" Value="#2e7d32"/>
+                                </DataTrigger>
+
+                                <DataTrigger TargetType="Border" Binding="{Binding Stado}" Value="Rechazado">
+                                    <Setter Property="BackgroundColor" Value="#c62828"/>
+                                </DataTrigger>
+
+                            </Border.Triggers>
+                        </Border>
+                        
+                        <Label Text="{Binding Estado}"
+                               TextColor="#a8c7fa" FontSize="16" FontAttributes="Bold"/>
+                    </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Grid>
 
-            <BoxView HeightRequest="1" BackgroundColor="LightGray" HorizontalOptions="Fill" Margin="0,5"/>
+            <BoxView HeightRequest="1" BackgroundColor="#454b52" HorizontalOptions="Fill" Margin="0,5"/>
 
-            <Label  Text="OBSERVACIONES:" FontSize="12" FontAttributes="Bold" Opacity="0.6" />
+            <VerticalStackLayout Spacing="5">
+                <Label  Text="OBSERVACIONES:" FontSize="10" FontAttributes="Bold" CharacterSpacing="1" TextColor="#8e9196"/>
 
-            <Border BackgroundColor="#F5F5F5" Padding="10">
-                <Label  Text="{Binding Observaciones}" FontSize="14" FontAttributes="Bold" Opacity="0.6" Margin="0,10,0,0" />
-            </Border>
+                <Border BackgroundColor="#2c2f33" Padding="15"
+                        Stroke="#454b52" StrokeShape="RoundRectangle 8">
+                    <Label  Text="{Binding Observaciones}" TextColor="White" FontSize="14" FontAttributes="Italic"/>
+                </Border>
+            </VerticalStackLayout>
 
-            <Label  Text="LISTADO DE MATERIALES:" FontSize="12" Opacity="0.6"
-                    FontAttributes="Bold"  Margin="0,10,0,0" />
+            <Label  Text="EQUIPO/MATERIAL CARGADO:" TextColor="#a8c7fa" FontSize="11" 
+                    FontAttributes="Bold"  Margin="0,10,0,0"  CharacterSpacing="2"/>
 
             <CollectionView ItemsSource="{Binding Items}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border Padding="12" Margin="0,0,0,8" StrokeShape="RoundRectangle 8">
-                            <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
-                                <Border Grid.Column="0" HeightRequest="30" WidthRequest="30"
-                                        Padding="0" BackgroundColor="#e0e0e0">
+                        <Border Padding="15" Margin="0,0,0,10" StrokeShape="RoundRectangle 5" Stroke="#545b52"
+                                BackgroundColor="#24272b">
+                            <Grid ColumnDefinitions="45, *, Auto" ColumnSpacing="15">
+                                <Border Grid.Column="0" HeightRequest="35" WidthRequest="35"
+                                        BackgroundColor="#a8c7fa" StrokeShape="RoundRectangle 17.5">
                                     <Label Text="{Binding Cantidad}" VerticalOptions="Center" HorizontalOptions="Center"
-                                           FontSize="12" FontAttributes="Bold"/>
+                                           TextColor="#1a1c1e" FontSize="14" FontAttributes="Bold"/>
                                 </Border>
 
                                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label Text="{Binding Descripcion}" FontAttributes="Bold" FontSize="14"/>
-                                    <Label Text="{Binding Tipo}" FontSize="12" Opacity="0.7"/>
+                                    <Label Text="{Binding Descripcion}" TextColor="White" 
+                                           FontAttributes="Bold" FontSize="15"/>
+                                    <Label Text="{Binding Tipo}" TextColor="#8e9196" 
+                                           FontSize="12" FontAttributes="Bold"/>
                                 </VerticalStackLayout>
                             </Grid>
                         </Border>
@@ -76,3 +105,18 @@
     </ScrollView>
 
 </ContentPage>
+
+<!-- bases:
+    #1a1c1e -> gris carbon, fondo
+    #a8c7fa -> azul acero, color de textos
+    #8e9196 -> gris medio, textos secundarios
+ 
+    #2c2f33 -> fondo oscuro, contenedores
+    #c62828 -> rojo oscurito,  cerrar sesion y demás
+    #2e7d32 -> verde aprobacion, para cosas buenas ahr
+    
+    
+    bordes con StrokeShape="RoundRectangle 5"
+    
+    uso de triggers ("mi led") para cambir el EstadoColor dependiendo lo q suceda con el reg automáticamente (gracias bbdd)
+    -->

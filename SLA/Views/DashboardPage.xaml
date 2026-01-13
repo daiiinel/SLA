@@ -3,49 +3,108 @@
     x:Class="SLA.Views.DashboardPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:SLA.ViewModels">
+    xmlns:vm="clr-namespace:SLA.ViewModels"
+    BackgroundColor="#1a1c1e"
+    Title="Panel de Control">
 
     <ContentPage.BindingContext>
         <vm:DashboardViewModel />
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout Padding="20" Spacing="15">
+    <ScrollView>
+        <VerticalStackLayout Padding="25" Spacing="20">
+            <Border BackgroundColor="#2c2f33" Padding="20"
+                    Stroke="#454b52" StrokeThickness="2" StrokeShape="RoundRectangle 10">
+                <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                    <Border BackgroundColor="#a8c7fa" StrokeShape="RoundRectangle 25"
+                            HeightRequest="50" WidthRequest="50">
+                        <Label Text="ID" HorizontalOptions="Center" VerticalOptions="Center"
+                               TextColor="#1a1c1e" FontAttributes="Bold"/>
+                    </Border>
 
-        <Label 
-            Text="{Binding Usuario}"
-            FontSize="22"
-            FontAttributes="Bold" />
+                    <VerticalStackLayout VerticalOptions="Center">
+                        <Label 
+                            Text="{Binding Usuario, StringFormat='Usuario: {0}'}"
+                            TextColor="White"
+                            FontSize="18"
+                            FontAttributes="Bold" 
+                            CharacterSpacing="1"/>
 
-        <Label 
-            Text="{Binding Rol}"
-            FontSize="16"
-            TextColor="Gray" />
+                        <Label 
+                            Text="{Binding Rol, StringFormat='Rango: {0}'}"
+                            FontSize="12" 
+                            FontAttributes="Bold"
+                            TextColor="#a8c7fa" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
 
-        <!-- OPERADOR -->
-        <Button
-            Text="Nuevo registro"
-            FontSize="18"
-            HeightRequest="55"
-            IsVisible="{Binding IsOperador}" 
-            Command="{Binding NuevoRegistroCommand}"/> <!--prox accion-->
 
-        <!-- JEFE -->
-        <Button
-            Text="Revisar registros enviados"
-            IsVisible="{Binding IsJefe}" 
-            Command="{Binding RevisarRegistrosCommand}"/>
+            <!-- OPERADOR -->
+            <Button
+                Text="Nuevo registro"
+                TextColor="#a8c7fa" BorderColor="#a8c7fa" BorderWidth="1"
+                FontSize="16"
+                FontAttributes="Bold"
+                BackgroundColor="#2c2f33"
+                CornerRadius="8"
+                HeightRequest="80"
+                IsVisible="{Binding IsOperador}" 
+                Command="{Binding NuevoRegistroCommand}"/> <!--prox accion-->
 
-        <!-- AUDITOR -->
-        <Button
-            Text="Ver registros históricos"
-            IsVisible="{Binding IsAuditor}" 
-            Command="{Binding VerHistorialCommand}"/>
+            <!-- JEFE -->
+            <Button
+                Text="Revisión de registros pendientes"
+                IsVisible="{Binding IsJefe}" 
+                Command="{Binding RevisarRegistrosCommand}"
+                BackgroundColor="#2c2f33"
+                TextColor="#a8c7fa" BorderColor="#a8c7fa" BorderWidth="1"
+                HeightRequest="80"
+                FontSize="16"
+                FontAttributes="Bold"
+                CornerRadius="8"/>
 
-        <Button
-            Text="Cerrar sesión"
-            Command="{Binding CerrarSesionCommand}"
-            BackgroundColor="DarkRed"
-            TextColor="White" />
+            <!-- AUDITOR -->
+            <Button
+                Text="Acceso a historial"
+                IsVisible="{Binding IsAuditor}" 
+                Command="{Binding VerHistorialCommand}"
+                 BackgroundColor="#2c2f33"
+                 TextColor="#a8c7fa" BorderColor="#a8c7fa" BorderWidth="1"
+                 HeightRequest="80"
+                 FontSize="16"
+                 FontAttributes="Bold"
+                 CornerRadius="8"/>
 
-    </VerticalStackLayout>
+            <BoxView HeightRequest="1" Color="#454b52" Margin="0,10"/>
+
+            <Button
+                Text="Cerrar sesión"
+                Command="{Binding CerrarSesionCommand}"
+                BackgroundColor="Transparent"
+                TextColor="#c62828" 
+                BorderColor="#c62828"
+                BorderWidth="1"
+                FontAttributes="Bold"
+                FontSize="13"
+                HeightRequest="50"
+                CornerRadius="8"/>
+
+            <!--dea-->
+            <Label Text="SLA SECURE ACCESS TERMINAL" TextColor="#454b52"
+                   FontSize="9" HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
+
+<!-- bases:
+    #1a1c1e -> gris carbon, fondo
+    #a8c7fa -> azul acero, color de textos
+    #8e9196 -> gris medio, textos secundarios
+ 
+    #2c2f33 -> fondo oscuro
+    #c62828 -> rojo oscurito,  cerrar sesion y demás
+    
+    bordes con StrokeShape="RoundRectangle 5"
+    -->
