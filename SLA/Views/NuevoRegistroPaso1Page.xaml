@@ -3,54 +3,140 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 xmlns:vm="clr-namespace:SLA.ViewModels"
                 x:Class="SLA.Views.NuevoRegistroPaso1Page"
-                Title="Nuevo registro – Paso 1">
+                Title="Apertura de registro"
+                BackgroundColor="#1a1c1e">
     
     <ContentPage.BindingContext>
         <vm:NuevoRegistroPaso1ViewModel />
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout>
-        <Label
-                Text="Datos generales"
-                FontSize="22"
-                FontAttributes="Bold" />
+    <ScrollView>
+        <VerticalStackLayout Padding="25" Spacing="20">
+            <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10" HeightRequest="10" Margin="0,0,0,10">
+                <Border Grid.Column="0" BackgroundColor="#a8c7fa" StrokeShape="RoundRectangle 5" />
+                <Border Grid.Column="1" BackgroundColor="#2c2f33" StrokeShape="RoundRectangle 5" />
+                <Border Grid.Column="2" BackgroundColor="#2c2f33" StrokeShape="RoundRectangle 5" />
+            </Grid>
+            <Label
+                    Text="Datos generales"
+                    TextColor="#a8c7fa"
+                    FontSize="18"
+                    FontAttributes="Bold" 
+                    CharacterSpacing="1"/>
 
-        <!-- Tipo de movimiento -->
-        <Label Text="Tipo de movimiento" />
-        <Picker
-                Title="Seleccione tipo"
-                ItemsSource="{Binding TiposMovimiento}"
-                SelectedItem="{Binding TipoSeleccionado}" />
+            <BoxView HeightRequest="1" Color="#454b52" />
 
-        <!-- Unidad -->
-        <Label Text="Unidad / Dependencia" />
-        <Entry
-                Placeholder="Ej: Batallón X"
-                Text="{Binding Unidad}" />
+            <VerticalStackLayout Spacing="15">
 
-        <!-- Fecha -->
-        <Label Text="Fecha" />
-        <DatePicker
-                Date="{Binding Fecha}" />
+                <VerticalStackLayout Spacing="5">
+                    <!-- Tipo de movimiento -->
+                    <Label Text="Tipo de movimiento /misión"  
+                           TextColor="#8e9196"
+                           FontSize="10"
+                           FontAttributes="Bold"
+                           Margin="5,0"/>
 
-        <!-- Operador -->
-        <Label Text="Operador responsable" />
-        <Entry
-                IsEnabled="False"
-                Text="{Binding Operador}" />
+                    <Border Stroke="#454B52" StrokeShape="RoundRectangle 4" BackgroundColor="#2C2F33" Padding="10,0">
+                        <Picker
+                                Title="Seleccionar"
+                                TitleColor="#8e9196"
+                                TextColor="White"
+                                ItemsSource="{Binding TiposMovimiento}"
+                                SelectedItem="{Binding TipoSeleccionado}" />
+                    </Border>
+                </VerticalStackLayout>
 
-        <!-- Observaciones -->
-        <Label Text="Observaciones" />
-        <Editor
-                AutoSize="TextChanges"
-                Placeholder="Opcional"
-                Text="{Binding Observaciones}" />
+                <VerticalStackLayout Spacing="5">
+                    <!-- Unidad -->
+                    <Label Text="Unidad / Dependencia" 
+                           TextColor="#8e9196"
+                           FontSize="10"
+                           FontAttributes="Bold"
+                           Margin="5,0"/>
 
-        <!-- continuar -->
-        <Button
-                Text="Continuar"
-                FontSize="18"
-                HeightRequest="55"
-                Command="{Binding ContinuarCommand}" />
-    </VerticalStackLayout>
+                    <Border Stroke="#454B52" StrokeShape="RoundRectangle 4" BackgroundColor="#2C2F33" Padding="10,0">
+                        <Entry
+                            Placeholder="Ej: Batallón X"
+                            Text="{Binding Unidad}" 
+                            PlaceholderColor="#454b52"
+                            TextColor="White"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="5">
+                    <!-- Fecha -->
+                    <Label Text="Fecha de registro" 
+                           TextColor="#8e9196"
+                           FontSize="10"
+                           FontAttributes="Bold"
+                           Margin="5,0"/>
+                    <Border Stroke="#454B52" StrokeShape="RoundRectangle 4" BackgroundColor="#2C2F33" Padding="10,0">
+                        <DatePicker
+                                Date="{Binding Fecha}"  TextColor="White"/>
+                    </Border>
+                </VerticalStackLayout>
+
+
+                <VerticalStackLayout Spacing="5">
+                    <!-- Operador -->
+                    <Label  Text="Operador responsable"
+                            TextColor="#8e9196"
+                            FontSize="10"
+                            FontAttributes="Bold"
+                            Margin="5,0"/>
+                    <Border Stroke="#454B52" StrokeShape="RoundRectangle 4" BackgroundColor="#2C2F33" Padding="10,0">
+                        <Entry
+                            IsEnabled="False"
+                            Text="{Binding Operador}" 
+                            TextColor="#a8c7fa"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="5">
+                    <!-- Observaciones -->
+                    <Label  Text="Observaciones" 
+                            TextColor="#8e9196"
+                            FontSize="10"
+                            FontAttributes="Bold"
+                            Margin="5,0"/>
+                    <Border Stroke="#454B52" StrokeShape="RoundRectangle 4" BackgroundColor="#2C2F33" Padding="10,0">
+                        <Editor
+                            AutoSize="TextChanges"
+                            Placeholder="Opcional"
+                            PlaceholderColor="#454b52"
+                            Text="{Binding Observaciones}" 
+                            TextColor="White"/>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+            <!-- continuar -->
+            <Button
+                    Text="Continuar a materiales"
+                    HeightRequest="60"
+                    Command="{Binding ContinuarCommand}" 
+                    BackgroundColor="#a8c7fa"
+                    TextColor="#1a1c1e"
+                    FontAttributes="Bold"
+                    CornerRadius="8"
+                    Margin="0,20,0,20"/>
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>
+
+<!-- bases:
+    #1a1c1e -> gris carbon, fondo
+    #a8c7fa -> azul acero, color de textos
+    #8e9196 -> gris medio, textos secundarios
+ 
+    #2c2f33 -> fondo oscuro, contenedores
+    #c62828 -> rojo oscurito,  cerrar sesion y demás
+    #2e7d32 -> verde aprobacion, para cosas buenas ahr
+    
+    #454b52 -> gris azulado (carbon profundo), strokes y placeholders
+    
+    
+    bordes con StrokeShape="RoundRectangle 5"
+    
+    uso de triggers ("mi led") para cambir el EstadoColor dependiendo lo q suceda con el reg automáticamente (gracias bbdd)
+    -->
