@@ -3,58 +3,115 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SLA.ViewModels"
              x:Class="SLA.Views.NuevoRegistroPaso3Page"
+             BackgroundColor="#1a1c1e"
              Title="Confirmación">
 
     <!--<ContentPage.BindingContext>
         <vm:NuevoRegistroPaso3ViewModel />
     </ContentPage.BindingContext>-->
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="12">
+    <Grid RowDefinitions="Auto, *, Auto" Padding="25" RowSpacing="15">
 
-            <Label
-                Text="Confirmar registro"
-                FontSize="22"
-                FontAttributes="Bold" />
+        <Grid Grid.Row="0" ColumnDefinitions="*, *, *" ColumnSpacing="10" HeightRequest="10">
+            <Border Grid.Column="0" BackgroundColor="#2E7D32" StrokeShape="RoundRectangle 5" />
+            <Border Grid.Column="1" BackgroundColor="#2E7D32" StrokeShape="RoundRectangle 5" />
+            <Border Grid.Column="2" BackgroundColor="#A8C7FA" StrokeShape="RoundRectangle 5" />
+        </Grid>
 
-            <!-- DATOS GENERALES -->
-            <Label Text="Datos generales" FontAttributes="Bold" />
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="20">
+                <Label
+                    Text="Confirmar registro"
+                    TextColor="#a8c7fa"
+                    CharacterSpacing="1"
+                    FontSize="18"
+                    FontAttributes="Bold" />
 
-            <Label Text="{Binding ResumenGeneral}" />
+                <Border BackgroundColor="#2C2F33" 
+                        Stroke="#454b52" 
+                        Padding="15" 
+                        StrokeShape="RoundRectangle 8">
+                    <!-- DATOS GENERALES -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Datos generales" 
+                               TextColor="#8e9196"
+                               CharacterSpacing="1"
+                               FontSize="10"
+                               FontAttributes="Bold" />
 
-            <!-- DETALLE -->
-            <Label Text="Detalle" FontAttributes="Bold" />
+                        <Label Text="{Binding ResumenGeneral}" 
+                               TextColor="White"
+                               FontSize="15"/>
+                    </VerticalStackLayout>
+                </Border>
 
-            <CollectionView ItemsSource="{Binding Items}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Padding="8"
-                                Margin="0,4"
-                                StrokeThickness="0">
-                            <Label Text="{Binding Resumen}" />
-                        </Border>
+                <VerticalStackLayout Spacing="10">
+                    <!-- DETALLE -->
+                    <Label Text="Detalle" 
+                           TextColor="#8e9196"
+                           CharacterSpacing="1"
+                           FontSize="10"
+                           FontAttributes="Bold" />
 
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                    <CollectionView ItemsSource="{Binding Items}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="12"
+                                        Margin="0,0,0,5"
+                                        BackgroundColor="#24272b"
+                                        Stroke="#3b3f44"
+                                        StrokeShape="RoundRectangle 4">
+                                    <Label Text="{Binding Resumen}" 
+                                           TextColor="#a8c7fa"
+                                           FontSize="13"
+                                           FontAttributes="Bold"/>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
 
-            <!-- FIRMA -->
-            <Label Text="Responsable" FontAttributes="Bold" />
-            <Label Text="{Binding Operador}" />
+                <!-- FIRMA -->
+                <Border BackgroundColor="#1a1c1e" 
+                        Stroke="#454b52" 
+                        StrokeDashArray="4,2"
+                        Padding="15" 
+                        StrokeShape="RoundRectangle 8">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Label Text="Responsable" 
+                               TextColor="#8e9196" 
+                               FontSize="10" 
+                               FontAttributes="Bold" 
+                               HorizontalOptions="Center"/>
+                        <Label Text="{Binding Operador}" 
+                               TextColor="White" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               HorizontalOptions="Center"/>
 
-            <!-- CONFIRMAR -->
-            <Button
-                Text="Confirmar y registrar"
-                FontSize="18"
-                HeightRequest="55"
-                BackgroundColor="DarkGreen"
-                TextColor="White"
-                Command="{Binding ConfirmarCommand}" />
+                        <BoxView HeightRequest="1" Color="#454B52" WidthRequest="150" Margin="0,10,0,0"/>
+                        <Label Text="Identidad confirmada" 
+                               TextColor="#2e7d32" 
+                               FontSize="9" 
+                               FontAttributes="Bold" 
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
 
-            <Button
-                Text="Cancelar"
-                Command="{Binding CancelarCommand}" />
+        <!-- CONFIRMAR -->
+        <VerticalStackLayout Grid.Row="2" Spacing="10" Margin="0,10,0,0">
+            <Button Text="Confirmar" 
+                    Command="{Binding ConfirmarCommand}"
+                    BackgroundColor="#2e7d32" TextColor="White" FontAttributes="Bold"
+                    HeightRequest="60" CornerRadius="8" />
+
+            <Button Text="Volver/cancelar" 
+                    Command="{Binding CancelarCommand}"
+                    BackgroundColor="Transparent" TextColor="#8e9196" 
+                    FontSize="12" FontAttributes="Bold" />
 
         </VerticalStackLayout>
-    </ScrollView>
+    </Grid>
 </ContentPage>

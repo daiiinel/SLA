@@ -4,66 +4,133 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:SLA.ViewModels"
     x:Class="SLA.Views.NuevoRegistroPaso2Page"
-    Title="Nuevo registro – Paso 2">
+    Title="Carga de inventario"
+    BackgroundColor="#1a1c1e">
 
     <ContentPage.BindingContext>
         <vm:NuevoRegistroPaso2ViewModel />
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout Padding="20" Spacing="12">
+    <Grid RowDefinitions="auto, auto, *, auto" Padding="25" RowSpacing="15">
 
-        <Label
-            Text="Detalle de armas / inventario"
-            FontSize="22"
-            FontAttributes="Bold" />
+        <Grid Grid.Row="0" ColumnDefinitions="*, *, *" ColumnSpacing="10" HeightRequest="10">
+            <Border Grid.Column="0" BackgroundColor="#2e7d32" StrokeShape="RoundRectangle 5" Opacity="0.6" />
+            <Border Grid.Column="1" BackgroundColor="#a8c7fa" StrokeShape="RoundRectangle 5" />
+            <Border Grid.Column="2" BackgroundColor="#2c2f33" StrokeShape="RoundRectangle 5" />
+        </Grid>
 
-        <!-- Tipo de ítem -->
-        <Label Text="Tipo" />
-        <Picker
-            Title="Seleccione"
-            ItemsSource="{Binding TiposItem}"
-            SelectedItem="{Binding TipoItem}" />
 
-        <!-- Descripción -->
-        <Label Text="Descripción" />
-        <Entry
-            Placeholder="Ej: Pistola Bersa TPR9"
-            Text="{Binding Descripcion}" />
 
-        <!-- Cantidad -->
-        <Label Text="Cantidad" />
-        <Entry
-            Keyboard="Numeric"
-            Placeholder="Ej: 5"
-            Text="{Binding Cantidad}" />
+        <VerticalStackLayout Spacing="15" Grid.Row="1">
 
-        <!-- Agregar -->
-        <Button
-            Text="Agregar a la lista"
-            Command="{Binding AgregarItemCommand}" />
+            <Label
+                Text="Detalle del material" TextColor="#a8c7fa" CharacterSpacing="1"
+                FontSize="18"
+                FontAttributes="Bold" />
 
-        <!-- Lista -->
-        <CollectionView ItemsSource="{Binding Items}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Border Padding="8"
-                            Margin="0,4"
-                            StrokeThickness="0">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Descripcion}" FontAttributes="Bold" />
-                            <Label Text="{Binding Resumen}" FontSize="12" />
-                        </VerticalStackLayout>
+            <Grid ColumnDefinitions="*,100" ColumnSpacing="10">
+                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                    <!-- Tipo de ítem -->
+                    <Label Text="Tipo" TextColor="#8e9196"
+                           FontSize="10" 
+                           FontAttributes="Bold"
+                           Margin="5,0"/>
+                    <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" BackgroundColor="#2c2f33" Padding="10,0">
+                        <Picker
+                            Title="Seleccionar"
+                            TitleColor="#8e9196"
+                            TextColor="White"
+                            ItemsSource="{Binding TiposItem}"
+                            SelectedItem="{Binding TipoItem}" />
                     </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="5">
+                    <!-- Cantidad -->
+                    <Label Text="Cantidad" 
+                           TextColor="#8e9196"
+                           FontSize="10"
+                           FontAttributes="Bold"
+                           Margin="5,0"/>
+                    <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" BackgroundColor="#2c2f33" Padding="10,0">
+                        <Entry
+                               Keyboard="Numeric"
+                               Placeholder="Ej: 5"
+                               PlaceholderColor="#454b52"
+                               TextColor="White"
+                               Text="{Binding Cantidad}" />
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+
+            <VerticalStackLayout Spacing="5">
+                <!-- Descripción -->
+                <Label Text="Descripción/Nro de serie" 
+                           TextColor="#8e9196"
+                           FontSize="10"
+                           FontAttributes="Bold"
+                           Margin="5,0"/>
+                <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" BackgroundColor="#2c2f33" Padding="10,0">
+                    <Entry
+                            Placeholder="Ej: Pistola Bersa TPR9"
+                            PlaceholderColor="#454b52"
+                            TextColor="White"
+                            Text="{Binding Descripcion}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Agregar -->
+            <Button
+                    Text="Agregar a la lista"
+                    BackgroundColor="#2c2f33"
+                    TextColor="#a8c7fa"
+                    BorderColor="#a8c7fa"
+                    BorderWidth="1"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    CornerRadius="8"
+                    Command="{Binding AgregarItemCommand}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="2" Spacing="10" Margin="0,10,0,0">
+            <!-- Lista -->
+            <CollectionView ItemsSource="{Binding Items}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="15"
+                            Margin="0,0,0,8"
+                            BackgroundColor="#24272b"
+                            Stroke="#454b52"
+                            StrokeShape="RoundRectangle 5">
+                            <Grid ColumnDefinitions="Auto, *">
+                                <Border Grid.Column="0" HeightRequest="30" WidthRequest="30" 
+                                        StrokeShape="RoundRectangle 15" BackgroundColor="#a8c7fa" Margin="0,0,15,0">
+                                    <Label Text="{Binding Cantidad}" VerticalOptions="Center" HorizontalOptions="Center" 
+                                           TextColor="#1a1c1e" FontSize="12" FontAttributes="Bold"/>
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Descripcion}" TextColor="White" FontAttributes="Bold" FontSize="14" />
+                                    <Label Text="{Binding Tipo}" TextColor="#8e9196" FontSize="11" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
 
         <!-- continuar -->
         <Button
             Text="Continuar"
-            FontSize="18"
-            HeightRequest="55"
+            HeightRequest="60"
+            Grid.Row="3"
+            BackgroundColor="#a8c7fa"
+            TextColor="#1a1c1e"
+            FontAttributes="Bold"
+            CornerRadius="8"
+            Margin="0,10,0,0"
             Command="{Binding ContinuarCommand}" />
 
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

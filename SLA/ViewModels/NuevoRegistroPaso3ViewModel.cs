@@ -74,4 +74,13 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         RegistroActualService.Limpiar();
         await Shell.Current.GoToAsync("//DashboardPage");
     }
+
+    //opcion de volver proximamente (en vez de cancelar y empezae de cero )
+    /*
+    [RelayCommand]
+    async Task Volver()
+    {
+        // saca la pag actual del stack y vuelve a la anterior
+        await Shell.Current.GoToAsync("..");
+    }*/
 }
