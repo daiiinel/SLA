@@ -1,7 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm;
 using SLA.Models;
 using SLA.Services;
+using SLA.Views;
 using System.Collections.ObjectModel;
 
 namespace SLA.ViewModels;
@@ -16,6 +18,11 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
     private readonly IPrintService _printService;
 
     public string Operador =>RegistroActual.Operador;
+
+    // Usando CommunityToolkit.Mvvm
+    [ObservableProperty]
+    bool isBusy;
+
 
     public string ResumenGeneral =>
         $"Tipo: {RegistroActual.TipoMovimiento}\n" +
@@ -32,6 +39,11 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
     [RelayCommand]
     private async Task Confirmar()
     {
+        if (IsBusy)
+            return; // Seguridad: no permite doble envío
+
+        IsBusy = true;
+
         try
         {
             // estado final del envio
@@ -41,6 +53,9 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
             //RegistroService.GuardarRegistro(RegistroActual);
             // guardo un solo serv (guardaba en 2 por boludita)
             await RegistroStorageService.GuardarAsync(RegistroActual);
+
+            // Simulamos la generación de PDF y envío (2 segundos)
+            await Task.Delay(2000);
 
             await Shell.Current.DisplayAlertAsync("OK", "Registro guardado correctamente", "Aceptar");
 
@@ -61,6 +76,10 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         {
             await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
         }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]
@@ -76,11 +95,17 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
     }
 
     //opcion de volver proximamente (en vez de cancelar y empezae de cero )
-    /*
     [RelayCommand]
     async Task Volver()
     {
         // saca la pag actual del stack y vuelve a la anterior
-        await Shell.Current.GoToAsync("..");
-    }*/
+        try
+        {
+            await Shell.Current.GoToAsync(nameof(NuevoRegistroPaso2Page));
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
+        }
+    }
 }

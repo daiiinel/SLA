@@ -102,15 +102,26 @@
 
         <!-- CONFIRMAR -->
         <VerticalStackLayout Grid.Row="2" Spacing="10" Margin="0,10,0,0">
-            <Button Text="Confirmar" 
-                    Command="{Binding ConfirmarCommand}"
-                    BackgroundColor="#2e7d32" TextColor="White" FontAttributes="Bold"
-                    HeightRequest="60" CornerRadius="8" />
 
-            <Button Text="Volver/cancelar" 
-                    Command="{Binding CancelarCommand}"
-                    BackgroundColor="Transparent" TextColor="#8e9196" 
-                    FontSize="12" FontAttributes="Bold" />
+            <Button Text="CONFIRMAR Y TRANSMITIR" 
+            Command="{Binding ConfirmarCommand}"
+            BackgroundColor="#2E7D32" TextColor="White" FontAttributes="Bold"
+            HeightRequest="60" CornerRadius="8" />
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Volver al paso anterior" 
+                        Command="{Binding VolverCommand}" 
+                        BackgroundColor="#2C2F33" TextColor="#A8C7FA" 
+                        BorderColor="#A8C7FA" BorderWidth="1"
+                        FontSize="12" FontAttributes="Bold" HeightRequest="45" />
+
+                <Button Grid.Column="1"
+                        Text="Cancelar" 
+                        Command="{Binding CancelarCommand}"
+                        BackgroundColor="Transparent" TextColor="#C62828" 
+                        FontSize="12" FontAttributes="Bold" HeightRequest="45" />
+            </Grid>
 
         </VerticalStackLayout>
     </Grid>

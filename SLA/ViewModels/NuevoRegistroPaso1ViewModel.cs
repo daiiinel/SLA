@@ -69,4 +69,16 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
         // Nos vamosh al paso 2
         await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso2Page));*/
     }
+
+    [RelayCommand]
+    private async Task Cancelar()
+    {
+        bool salir = await Shell.Current.DisplayAlertAsync("Cancelar", "Se perderán los datos cargados", "Sí", "No");
+
+        if (!salir)
+            return;
+
+        RegistroActualService.Limpiar();
+        await Shell.Current.GoToAsync("//DashboardPage");
+    }
 }

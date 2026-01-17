@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SLA.Models;
 using SLA.Services;
+using SLA.Views;
 using System.Collections.ObjectModel;
 
 
@@ -82,5 +83,29 @@ public partial class NuevoRegistroPaso2ViewModel : ObservableObject
     {
         if (Items.Contains(item))
             Items.Remove(item);
+    }
+    [RelayCommand]
+    async Task Volver()
+    {
+        // saca la pag actual del stack y vuelve a la anterior
+        try
+        {
+            await Shell.Current.GoToAsync(nameof(NuevoRegistroPaso1Page));
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
+        }
+    }
+    [RelayCommand]
+    private async Task Cancelar()
+    {
+        bool salir = await Shell.Current.DisplayAlertAsync("Cancelar", "Se perderán los datos cargados", "Sí", "No");
+
+        if (!salir)
+            return;
+
+        RegistroActualService.Limpiar();
+        await Shell.Current.GoToAsync("//DashboardPage");
     }
 }

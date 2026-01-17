@@ -121,16 +121,28 @@
         </VerticalStackLayout>
 
         <!-- continuar -->
-        <Button
-            Text="Continuar"
-            HeightRequest="60"
-            Grid.Row="3"
-            BackgroundColor="#a8c7fa"
-            TextColor="#1a1c1e"
-            FontAttributes="Bold"
-            CornerRadius="8"
-            Margin="0,10,0,0"
-            Command="{Binding ContinuarCommand}" />
+        <VerticalStackLayout Grid.Row="3" Spacing="10" Margin="0,10,0,0">
+
+            <Button Text="Continuar" 
+                    Command="{Binding ContinuarCommand}"
+                    BackgroundColor="#A8C7FA" TextColor="#1A1C1E" FontAttributes="Bold"
+                    HeightRequest="60" CornerRadius="8" /> 
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Volver" 
+                        Command="{Binding VolverCommand}" 
+                        BackgroundColor="#2C2F33" TextColor="#A8C7FA" 
+                        BorderColor="#A8C7FA" BorderWidth="1"
+                        FontSize="12" FontAttributes="Bold" HeightRequest="45" />
+
+                <Button Grid.Column="1"
+                        Text="Cancelar" 
+                        Command="{Binding CancelarCommand}"
+                        BackgroundColor="Transparent" TextColor="#C62828" 
+                        FontSize="12" FontAttributes="Bold" HeightRequest="45" />
+            </Grid>
+        </VerticalStackLayout>
 
     </Grid>
 </ContentPage>
