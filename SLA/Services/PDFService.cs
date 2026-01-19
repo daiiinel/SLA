@@ -14,9 +14,9 @@ public class PDFService
         {
             filasItems += $@"
                 <tr>
-                    <td style='text-align: center;'>{item.Tipo}</td>
-                    <td>{item.Descripcion}</td>
-                    <td style='text-align: center;'>{item.Cantidad}</td>
+                    <td style='text-align: center; border: 1px solid #444;'>{item.Tipo}</td>
+                    <td style='border: 1px solid #444; padding: 5px;'>{item.Descripcion}</td>
+                    <td style='text-align: center; border: 1px solid #444;'>{item.Cantidad}</td>
                 </tr>";
         }
 
@@ -26,6 +26,11 @@ public class PDFService
             .Replace("{{UNIDAD}}", registro.Unidad.ToUpper())
             .Replace("{{MOVIMIENTO}}", registro.TipoMovimiento.ToUpper())
             .Replace("{{OPERADOR}}", registro.Operador.ToUpper())
+            //nuevos campos :n
+            .Replace("{{RECEPTOR_NOMBRE}}", registro.NombreCompletoReceptor?.ToUpper())
+            .Replace("{{RECEPTOR_DNI}}", registro.BusquedaDNI ?? "---")
+            .Replace("{{RECEPTOR_GRADO}}", registro.GradoUnidadReceptor?.ToUpper() ?? "---")
+            //
             .Replace("{{ESTADO}}", registro.Estado.ToString().ToUpper())
             .Replace("{{OBSERVACIONES}}", registro.Observaciones ?? "SIN NOVEDAD")
             .Replace("{{FILAS_ITEMS}}", filasItems);

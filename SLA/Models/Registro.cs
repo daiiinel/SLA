@@ -12,6 +12,11 @@ public class Registro
     public string? Observaciones { get; set; }
     public ObservableCollection<ItemRegistro> Items { get; set; } = new();
     public EstadoRegistro Estado { get; set; } = EstadoRegistro.Borrador;
+
+    // nuevos campos para el receptor
+    public string? BusquedaDNI { get; set; }
+    public string? NombreCompletoReceptor { get; set; }
+    public string? GradoUnidadReceptor { get; set; }
 }
 
 /*

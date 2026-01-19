@@ -23,6 +23,32 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
     private string? observaciones;
     public string? Observaciones { get => observaciones; set => SetProperty(ref observaciones, value); }
 
+    //nuevos campos
+    private string busquedaDNI = String.Empty;
+    public string BusquedaDNI { get => busquedaDNI; set => SetProperty(ref busquedaDNI, value); }
+
+    private string nombreCompletoReceptor = "Nombre: ---";
+    public string NombreCompletoReceptor { get => nombreCompletoReceptor; set=>SetProperty(ref nombreCompletoReceptor, value);}
+
+    private string gradoUnidadReceptor = "Grado/Unidad: ---";
+    public string GradoUnidadReceptor { get => gradoUnidadReceptor; set => SetProperty(ref gradoUnidadReceptor, value); }
+   
+    private bool receptorEncontrado = false;
+    public bool ReceptorEncontrado
+    {
+        get => receptorEncontrado;
+        set
+        {
+            if (SetProperty(ref receptorEncontrado, value))
+            {
+                ContinuarCommand.NotifyCanExecuteChanged(); // continuar debe reevaluarse
+                OnPropertyChanged(nameof(MostrarAdvertenciaReceptor)); //notifcamos q se cambie el msj de error
+            }
+        }
+    }
+
+    public bool MostrarAdvertenciaReceptor => !ReceptorEncontrado;
+
     //Listas
     public ObservableCollection<string> TiposMovimiento { get; } = new() {"Alta", "Baja", "Traslado", "Prestamo"};
 
@@ -33,7 +59,8 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
 
 
     //Comands
-    [RelayCommand]
+    //solo se puede ejecutar si ReceptorEncontrado=true
+    [RelayCommand(CanExecute =nameof(ReceptorEncontrado))]
     private async Task Continuar()
     {
         //Mensajes mas claros (se supone q el principal user sera un soldadito)
@@ -55,6 +82,9 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
         r.Unidad = Unidad;
         r.Fecha = Fecha;
         r.Observaciones = Observaciones;
+        r.BusquedaDNI = BusquedaDNI;
+        r.NombreCompletoReceptor = NombreCompletoReceptor;
+        r.GradoUnidadReceptor = GradoUnidadReceptor;
 
         await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso2Page));
 
@@ -71,7 +101,7 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task Cancelar()
+    private static async Task Cancelar()
     {
         bool salir = await Shell.Current.DisplayAlertAsync("Cancelar", "Se perderán los datos cargados", "Sí", "No");
 
@@ -80,5 +110,42 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
 
         RegistroActualService.Limpiar();
         await Shell.Current.GoToAsync("//DashboardPage");
+    }
+
+    [RelayCommand]
+    private async Task BuscarReceptor()
+    {
+        if (string.IsNullOrWhiteSpace(BusquedaDNI))
+        {
+            await Shell.Current.DisplayAlertAsync("SLA INFO", "Ingrese un DNI o Legajo para buscar.", "OK");
+            return;
+        }
+
+        // IsBusy = true; 
+
+        await Task.Delay(1000); // simulo delay bbdd
+
+        // prox --> var p = await _database.GetPersonaByDni(BusquedaDNI); //con mi bbdd
+        if (BusquedaDNI == "111")
+        {
+            NombreCompletoReceptor = "NOMBRE: AGUILUCHO, JUAN JESÚS";
+            GradoUnidadReceptor = "SARGENTO / BATALLÓN COM 02";
+            ReceptorEncontrado = true;
+        }
+        else if (BusquedaDNI == "222")
+        {
+            NombreCompletoReceptor = "NOMBRE: LOBO, RODRIGO ANTONIO";
+            GradoUnidadReceptor = "CABO PRIMERO / PFA";
+            ReceptorEncontrado = true;
+        }
+        else
+        {
+            await Shell.Current.DisplayAlertAsync("SLA ERROR", "Personal no identificado en la base de datos..", "Reintentar");
+            NombreCompletoReceptor = "Nombre: ---";
+            GradoUnidadReceptor = "Grado/Unidad: ---";
+            ReceptorEncontrado = false;
+        }
+
+        // IsBusy = false;
     }
 }

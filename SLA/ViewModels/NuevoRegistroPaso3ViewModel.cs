@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm;
 using SLA.Models;
 using SLA.Services;
 using SLA.Views;
+using SLA.ViewModels;
 using System.Collections.ObjectModel;
 
 namespace SLA.ViewModels;
@@ -23,10 +24,17 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
     [ObservableProperty]
     bool isBusy;
 
+    //nuevos campos
+    public string NombreReceptor => RegistroActual.NombreCompletoReceptor ?? "Sin identificar";
+
+    public string GradoUnidadReceptor => RegistroActual.GradoUnidadReceptor ?? "---";
+
+    public string DniReceptor => RegistroActual.BusquedaDNI ?? "---";
+
+    public string ResumenMision =>
+        $"{RegistroActual.TipoMovimiento} en {RegistroActual.Unidad}";
 
     public string ResumenGeneral =>
-        $"Tipo: {RegistroActual.TipoMovimiento}\n" +
-        $"Unidad: {RegistroActual.Unidad}\n" +
         $"Fecha: {RegistroActual.Fecha:dd/MM/yyyy}\n" +
         $"Observaciones: {RegistroActual.Observaciones ?? "-"}";
 
