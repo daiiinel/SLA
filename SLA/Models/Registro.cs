@@ -17,6 +17,9 @@ public class Registro
     public string? BusquedaDNI { get; set; }
     public string? NombreCompletoReceptor { get; set; }
     public string? GradoUnidadReceptor { get; set; }
+
+    //firma
+    public string? FirmaBase64 { get; set; }
 }
 
 /*

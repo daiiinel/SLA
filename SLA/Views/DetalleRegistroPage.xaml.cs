@@ -59,7 +59,7 @@ public partial class DetalleRegistroPage : ContentPage
 
         try
         {
-            string html = await PDFService.GenerarHtmlResumen(_registro);
+            string html = await PDFService.GenerarHtmlResumen(_registro, _registro.FirmaBase64 ?? "");
 
             _printService.PrintHtml(html);
         }

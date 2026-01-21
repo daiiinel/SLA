@@ -72,6 +72,7 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
             // estado final del envio
             RegistroActual.Estado = EstadoRegistro.Enviado;
             RegistroActual.Fecha = DateTime.Now;
+            RegistroActual.FirmaBase64 = firmaBase64; 
 
             //RegistroService.GuardarRegistro(RegistroActual);
             // guardo un solo serv (guardaba en 2 por boludita)
