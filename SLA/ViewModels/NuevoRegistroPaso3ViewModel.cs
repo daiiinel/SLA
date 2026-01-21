@@ -1,10 +1,13 @@
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm;
+using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Core.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm;
 using SLA.Models;
 using SLA.Services;
-using SLA.Views;
 using SLA.ViewModels;
+using SLA.Views;
 using System.Collections.ObjectModel;
 
 namespace SLA.ViewModels;
@@ -38,6 +41,10 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         $"Fecha: {RegistroActual.Fecha:dd/MM/yyyy}\n" +
         $"Observaciones: {RegistroActual.Observaciones ?? "-"}";
 
+    //componentes pa la firma digital
+    [ObservableProperty]
+    private ObservableCollection<IDrawingLine> firmaLines = new();
+
     public NuevoRegistroPaso3ViewModel(IPrintService printService)
     {
         // lo recibimos en el constr y nuestro maui lo inyecta solito¿
@@ -45,10 +52,18 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task Confirmar()
+    private async Task Confirmar(string firmaBase64)
     {
         if (IsBusy)
             return; // Seguridad: no permite doble envío
+
+        // si no hay líneas, no hay firma.
+        if (string.IsNullOrWhiteSpace(firmaBase64))
+        {
+            await Shell.Current.DisplayAlertAsync("SLA", "El receptor debe firmar..", "OK");
+            return;
+        }
+
 
         IsBusy = true;
 
@@ -63,7 +78,7 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
             await RegistroStorageService.GuardarAsync(RegistroActual);
 
             // Simulamos la generación de PDF y envío (2 segundos)
-            await Task.Delay(2000);
+            await Task.Delay(1000);
 
             await Shell.Current.DisplayAlertAsync("OK", "Registro guardado correctamente", "Aceptar");
 
@@ -73,7 +88,7 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
 
             if (verPdf)
             {
-                string html = await PDFService.GenerarHtmlResumen(RegistroActual);
+                string html = await PDFService.GenerarHtmlResumen(RegistroActual, firmaBase64);
                 _printService.PrintHtml(html);
             }
 
@@ -115,5 +130,12 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         {
             await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
         }
+    }
+
+    //firm digital
+    [RelayCommand]
+    private void LimpiarFirma()
+    {
+        FirmaLines.Clear();
     }
 }

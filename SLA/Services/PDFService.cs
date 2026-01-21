@@ -2,7 +2,7 @@
 
 public class PDFService
 {
-    public static async Task<string> GenerarHtmlResumen(Models.Registro registro)
+    public static async Task<string> GenerarHtmlResumen(Models.Registro registro, string firmaBase64)
     {
         string html="";
         using (var stream = await FileSystem.OpenAppPackageFileAsync("2404.html"))
@@ -30,11 +30,13 @@ public class PDFService
             .Replace("{{RECEPTOR_NOMBRE}}", registro.NombreCompletoReceptor?.ToUpper())
             .Replace("{{RECEPTOR_DNI}}", registro.BusquedaDNI ?? "---")
             .Replace("{{RECEPTOR_GRADO}}", registro.GradoUnidadReceptor?.ToUpper() ?? "---")
+             //firma
+             .Replace("{{FIRMA_RECEPTOR}}", $"<img src='data:image/png;base64,{firmaBase64}' style='width:150px;' />")
             //
             .Replace("{{ESTADO}}", registro.Estado.ToString().ToUpper())
             .Replace("{{OBSERVACIONES}}", registro.Observaciones ?? "SIN NOVEDAD")
             .Replace("{{FILAS_ITEMS}}", filasItems);
-
+    
         return htmlFinal;
     }
 }
