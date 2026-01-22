@@ -14,7 +14,7 @@ namespace SLA.ViewModels
         public string Usuario { get => usuario; set => SetProperty(ref usuario, value); }
 
         private string rol = string.Empty;
-        public string Rol{ get => rol; set => SetProperty(ref rol, value); } //eliminable?¿
+        public string Rol{ get => rol; set => SetProperty(ref rol, value); } //eliminable?¿ -> nio
 
         private Roles? _rolActual;
         public Roles? RolActual

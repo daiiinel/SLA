@@ -84,7 +84,9 @@
                                 x:Name="FirmaDrawingView"
                                 HeightRequest="180"
                                 LineColor="Black"
-                                LineWidth="3" />
+                                LineWidth="3" 
+                                BackgroundColor="White"
+                                IsMultiLineModeEnabled="True"/>
                         </Border>
 
                         <Button Text="Limpiar firma"

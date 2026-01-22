@@ -64,7 +64,6 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
             return;
         }
 
-
         IsBusy = true;
 
         try

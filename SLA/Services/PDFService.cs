@@ -31,7 +31,7 @@ public class PDFService
             .Replace("{{RECEPTOR_DNI}}", registro.BusquedaDNI ?? "---")
             .Replace("{{RECEPTOR_GRADO}}", registro.GradoUnidadReceptor?.ToUpper() ?? "---")
              //firma
-             .Replace("{{FIRMA_RECEPTOR}}", $"<img src='data:image/png;base64,{firmaBase64}' style='width:150px;' />")
+             .Replace("{{FIRMA_RECEPTOR}}", $"<img src='data:image/png;base64,{firmaBase64}' class='firma-img' />")
             //
             .Replace("{{ESTADO}}", registro.Estado.ToString().ToUpper())
             .Replace("{{OBSERVACIONES}}", registro.Observaciones ?? "SIN NOVEDAD")
