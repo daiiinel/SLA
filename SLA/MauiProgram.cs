@@ -23,20 +23,19 @@ namespace SLA
 #if ANDROID
             builder.Services.AddTransient<IPrintService, SLA.Platforms.Android.AndroidPrintService>();
 #endif
-            builder.Services.AddTransient<NuevoRegistroPaso1ViewModel>();
-            builder.Services.AddTransient<NuevoRegistroPaso2ViewModel>();
-            builder.Services.AddTransient<NuevoRegistroPaso3ViewModel>();
+            builder.Services.AddSingleton<NuevoRegistroPaso1ViewModel>();
+            builder.Services.AddSingleton<NuevoRegistroPaso2ViewModel>();
+            builder.Services.AddSingleton<NuevoRegistroPaso3ViewModel>();
             builder.Services.AddTransient<RevisionRegistroViewModel>();
 
-            builder.Services.AddTransient<NuevoRegistroPaso1Page>();
-            builder.Services.AddTransient<NuevoRegistroPaso2Page>();
-            builder.Services.AddTransient<NuevoRegistroPaso3Page>();
+            builder.Services.AddSingleton<NuevoRegistroPaso1Page>();
+            builder.Services.AddSingleton<NuevoRegistroPaso2Page>();
+            builder.Services.AddSingleton<NuevoRegistroPaso3Page>();
             builder.Services.AddTransient<RevisionRegistrosPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-
             return builder.Build();
         }
     }

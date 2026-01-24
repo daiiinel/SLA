@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SLA.Services;
 using System.Collections.ObjectModel;
+using SLA.Views;
 
 namespace SLA.ViewModels;
 
@@ -63,7 +64,7 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
     [RelayCommand(CanExecute =nameof(ReceptorEncontrado))]
     private async Task Continuar()
     {
-        //Mensajes mas claros (se supone q el principal user sera un soldadito)
+        //Mensajes mas claros (se supone q el principal user sera un we q trabaje con soldaditos ah)
         if (string.IsNullOrWhiteSpace(TipoSeleccionado))
         {
             await Shell.Current.DisplayAlertAsync("Falta información","Debe seleccionar el tipo de movimiento..", "OK");
@@ -75,7 +76,10 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
             return;
         }
 
-        RegistroActualService.CrearNuevo(operador);
+        // creamos si no hay un registro iniciado
+        // si ya existe (pq volvimos del step2), mantenemos el objeto actual
+        if (RegistroActualService.RegistroActual == null)
+            RegistroActualService.CrearNuevo(operador);
 
         var r = RegistroActualService.RegistroActual!;
         r.TipoMovimiento = TipoSeleccionado;
@@ -85,8 +89,9 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
         r.BusquedaDNI = BusquedaDNI;
         r.NombreCompletoReceptor = NombreCompletoReceptor;
         r.GradoUnidadReceptor = GradoUnidadReceptor;
+        r.Operador = operador; //sirve pa cuando tengamos mas de un admin¿
 
-        await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso2Page));
+        await Shell.Current.GoToAsync(nameof(NuevoRegistroPaso2Page));
 
         /*
         // Guardar estado temporal del registro

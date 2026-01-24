@@ -15,14 +15,22 @@ public static class RegistroStorageService
 
         try
         {
-            List<Registro> registros = new();
+            List<Registro> registros = await ObtenerTodosAsync();
 
-            if (File.Exists(Ruta))
-                registros = JsonSerializer.Deserialize<List<Registro>>(await File.ReadAllTextAsync(Ruta)) ?? new();
+            var existe = registros.FirstOrDefault(r => r.Id == registro.Id);
+            if (existe != null)
+                registros.Remove(existe);
 
             registros.Add(registro);
 
-            var nuevoJson = JsonSerializer.Serialize(registros, new JsonSerializerOptions { WriteIndented = true });
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNameCaseInsensitive= true,
+                IncludeFields = true //por si hay campos internos
+            };
+
+            var nuevoJson = JsonSerializer.Serialize(registros, options);
 
             await File.WriteAllTextAsync(Ruta, nuevoJson);
         }

@@ -102,7 +102,7 @@
                             BackgroundColor="#24272b"
                             Stroke="#454b52"
                             StrokeShape="RoundRectangle 5">
-                            <Grid ColumnDefinitions="Auto, *">
+                            <Grid ColumnDefinitions="Auto, *, auto" ColumnSpacing="10">
                                 <Border Grid.Column="0" HeightRequest="30" WidthRequest="30" 
                                         StrokeShape="RoundRectangle 15" BackgroundColor="#a8c7fa" Margin="0,0,15,0">
                                     <Label Text="{Binding Cantidad}" VerticalOptions="Center" HorizontalOptions="Center" 
@@ -113,6 +113,16 @@
                                     <Label Text="{Binding Descripcion}" TextColor="White" FontAttributes="Bold" FontSize="14" />
                                     <Label Text="{Binding Tipo}" TextColor="#8e9196" FontSize="11" />
                                 </VerticalStackLayout>
+
+                                <Button Grid.Column="2"
+                                        Text="X" TextColor="#C62828"
+                                        FontSize="18"
+                                        BackgroundColor="Transparent"
+                                        VerticalOptions="Center"
+                                        HeightRequest="40" WidthRequest="40"
+                                        Padding="0"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NuevoRegistroPaso2ViewModel}}, Path=EliminarItemCommand}"
+                                        CommandParameter="{Binding .}" />
                             </Grid>
                         </Border>
                     </DataTemplate>

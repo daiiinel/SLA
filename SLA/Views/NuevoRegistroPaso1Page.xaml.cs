@@ -1,3 +1,5 @@
+using SLA.ViewModels;
+
 namespace SLA.Views;
 
 public partial class NuevoRegistroPaso1Page : ContentPage
@@ -6,4 +8,8 @@ public partial class NuevoRegistroPaso1Page : ContentPage
 	{
 		InitializeComponent();
 	}
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+    }
 }

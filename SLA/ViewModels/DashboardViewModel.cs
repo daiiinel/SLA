@@ -50,6 +50,8 @@ namespace SLA.ViewModels
         {
             try
             {
+                RegistroActualService.Limpiar(); //limpieza necesaria
+
                 await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso1Page));
             }
             catch(Exception ex)

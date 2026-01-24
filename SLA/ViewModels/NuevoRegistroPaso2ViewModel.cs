@@ -21,15 +21,11 @@ public partial class NuevoRegistroPaso2ViewModel : ObservableObject
 
 
     public ObservableCollection<string> TiposItem { get; } = new() { "Arma", "Munición", "Material" };
-    public ObservableCollection<ItemRegistro> Items { get; }
+    public ObservableCollection<ItemRegistro> Items => RegistroActualService.RegistroActual?.Items ?? new ObservableCollection<ItemRegistro>();
 
     public NuevoRegistroPaso2ViewModel()
     {
         var registro = RegistroActualService.RegistroActual ?? throw new InvalidOperationException("No hay registro activo");
-
-        // igualamos referencias..
-        // ahora Items en el vm es la misma lista que en el reg.cs
-        Items = registro.Items;
     }
 
     [RelayCommand]
@@ -51,8 +47,23 @@ public partial class NuevoRegistroPaso2ViewModel : ObservableObject
             await Shell.Current.DisplayAlertAsync("Cantidad inválida","Ingrese una cantidad válida.. (mayor a 0)","OK");
             return;
         }
+        var nuevoItem = new ItemRegistro
+        {
+            Tipo = TipoItem,
+            Cantidad = cant,
+            Descripcion = Descripcion
+        };
 
-        Items.Add(new ItemRegistro{ Tipo = TipoItem, Descripcion = Descripcion, Cantidad = cant});
+        if(RegistroActualService.RegistroActual!=null)
+        {
+            //Items.Add(nuevoItem);
+            RegistroActualService.RegistroActual?.Items.Add(nuevoItem); //
+
+            //opcional -> norifica si la ui se cambia
+            OnPropertyChanged(nameof(Items));
+        }
+        else
+            await Shell.Current.DisplayAlertAsync("Error", "No hay un registro activo iniciado.", "OK");
 
         // limpiar
         TipoItem = null;
@@ -70,7 +81,7 @@ public partial class NuevoRegistroPaso2ViewModel : ObservableObject
         try
         {
             //pasho 3
-            await Shell.Current.GoToAsync(nameof(Views.NuevoRegistroPaso3Page));
+            await Shell.Current.GoToAsync(nameof(NuevoRegistroPaso3Page));
         }
         catch (Exception ex)
         {
@@ -90,7 +101,7 @@ public partial class NuevoRegistroPaso2ViewModel : ObservableObject
         // saca la pag actual del stack y vuelve a la anterior
         try
         {
-            await Shell.Current.GoToAsync(nameof(NuevoRegistroPaso1Page));
+            await Shell.Current.GoToAsync("..", animate:true);
         }
         catch (Exception ex)
         {

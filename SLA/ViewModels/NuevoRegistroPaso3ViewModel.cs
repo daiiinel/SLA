@@ -124,7 +124,7 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
         // saca la pag actual del stack y vuelve a la anterior
         try
         {
-            await Shell.Current.GoToAsync(nameof(NuevoRegistroPaso2Page));
+            await Shell.Current.GoToAsync("..", animate: true);
         }
         catch (Exception ex)
         {
