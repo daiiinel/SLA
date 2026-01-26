@@ -12,13 +12,20 @@ namespace SLA.Views
 
         public HistorialPage()
         {
-            InitializeComponent();
-            HistorialView.ItemsSource = _registros;
+            try
+            {
+                InitializeComponent();
+                HistorialView.ItemsSource = _registros;
 
-            //llenamos el picker
-            TipoFiltroPicker.ItemsSource = new List<string> { "Todos", "Alta", "Baja", "Traslado", "Prestamo" };
+                //llenamos el picker
+                TipoFiltroPicker.ItemsSource = new List<string> { "Todos", "Alta", "Baja", "Traslado", "Prestamo" };
 
-            TipoFiltroPicker.SelectedIndex = 0;
+                TipoFiltroPicker.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
         }
 
         protected override void OnAppearing()
@@ -76,12 +83,11 @@ namespace SLA.Views
             if (e.CurrentSelection.FirstOrDefault() is not Registro seleccionado)
                 return;
 
-            RegistroActualService.RegistroActual = seleccionado;
-
-            // navegamos (sin pasar parámetros para no ensuciar la url ni fallar en la serialización)
-            await Shell.Current.GoToAsync(nameof(DetalleRegistroPage));
-
             ((CollectionView)sender).SelectedItem = null;
+
+            var navigationParameter = new Dictionary<string, object> { { "Registro", seleccionado } };
+
+            await Shell.Current.GoToAsync(nameof(DetalleRegistroPage), navigationParameter);
         }
     }
 }

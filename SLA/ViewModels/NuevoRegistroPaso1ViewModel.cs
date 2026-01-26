@@ -133,13 +133,13 @@ public partial class NuevoRegistroPaso1ViewModel : ObservableObject
         // prox --> var p = await _database.GetPersonaByDni(BusquedaDNI); //con mi bbdd
         if (BusquedaDNI == "111")
         {
-            NombreCompletoReceptor = "NOMBRE: AGUILUCHO, JUAN JESÚS";
+            NombreCompletoReceptor = "AGUILUCHO, JUAN JESÚS";
             GradoUnidadReceptor = "SARGENTO / BATALLÓN COM 02";
             ReceptorEncontrado = true;
         }
         else if (BusquedaDNI == "222")
         {
-            NombreCompletoReceptor = "NOMBRE: LOBO, RODRIGO ANTONIO";
+            NombreCompletoReceptor = "LOBO, RODRIGO ANTONIO";
             GradoUnidadReceptor = "CABO PRIMERO / PFA";
             ReceptorEncontrado = true;
         }

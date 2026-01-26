@@ -49,7 +49,7 @@ namespace SLA.ViewModels
             RegistrosEnviados.Clear();
 
             var registros = await RegistroStorageService.ObtenerTodosAsync();
-            var enviados = registros.Where(r => r.Estado == EstadoRegistro.Enviado).OrderByDescending(r => r.Fecha);
+            var enviados = registros.Where(r => r.Estado == EstadoRegistro.Entregado).OrderByDescending(r => r.Fecha);
 
             foreach (var r in enviados)
                 RegistrosEnviados.Add(r);
@@ -61,7 +61,7 @@ namespace SLA.ViewModels
             if (RegistroSeleccionado == null)
                 return;
 
-            RegistroSeleccionado.Estado = EstadoRegistro.Aprobado;
+            RegistroSeleccionado.Estado = EstadoRegistro.Auditado;
 
             await RegistroStorageService.ActualizarAsync(RegistroSeleccionado);
 

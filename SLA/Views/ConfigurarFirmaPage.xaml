@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SLA.Views.ConfigurarFirmaPage"
+             Title="Mi Firma Digital"
+             BackgroundColor="#1a1c1e">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Label Text="Registre su firma aquí" 
+               TextColor="White" 
+               FontSize="18" 
+               HorizontalOptions="Center"/>
+
+        <Label Text="Esta firma aparecerá en todos los formularios 2404 que usted emita"
+               TextColor="#8e9196"
+               FontSize="12"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"/>
+
+        <Border Stroke="#a8c7fa"
+                StrokeThickness="2"
+                HeightRequest="300"
+                Background="White">
+            <toolkit:DrawingView x:Name="PadFirmaOperador"
+                                LineColor="Black"
+                                LineWidth="5" 
+                                IsMultiLineModeEnabled="True"/>
+        </Border>
+
+        <Button Text="GUARDAR FIRMA"
+                Clicked="OnGuardarFirmaClicked"
+                BackgroundColor="#2e7d32"
+                TextColor="White"/>
+
+        <Button Text="LIMPIAR"
+                Clicked="OnLimpiarClicked"
+                BackgroundColor="Transparent"
+                TextColor="#a8c7fa"
+                BorderColor="#a8c7fa"
+                BorderWidth="1"/>
+    </VerticalStackLayout>
+</ContentPage>

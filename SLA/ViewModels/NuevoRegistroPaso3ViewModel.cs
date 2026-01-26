@@ -68,10 +68,15 @@ public partial class NuevoRegistroPaso3ViewModel : ObservableObject
 
         try
         {
+            // 1. Recuperar la firma guardada del operador (Configuración)
+            // Usamos Preferences para guardar la cadena Base64 de la firma del operador
+            string firmaGuardadaOperador = Preferences.Get("FirmaOperadorBase64", string.Empty);
+
             // estado final del envio
-            RegistroActual.Estado = EstadoRegistro.Enviado;
+            RegistroActual.Estado = EstadoRegistro.Entregado;
             RegistroActual.Fecha = DateTime.Now;
-            RegistroActual.FirmaBase64 = firmaBase64; 
+            RegistroActual.FirmaBase64 = firmaBase64; //receptor
+            RegistroActual.FirmaOperadorBase64 = firmaGuardadaOperador; // operador(nuestro admin)
 
             //RegistroService.GuardarRegistro(RegistroActual);
             // guardo un solo serv (guardaba en 2 por boludita)

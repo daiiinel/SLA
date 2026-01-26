@@ -21,12 +21,21 @@ namespace SLA
                 });
 
 #if ANDROID
-            builder.Services.AddTransient<IPrintService, SLA.Platforms.Android.AndroidPrintService>();
+            builder.Services.AddSingleton<IPrintService, SLA.Platforms.Android.AndroidPrintService>();
 #endif
+            //viewmodels
+            builder.Services.AddTransient<DashboardViewModel>();
+
             builder.Services.AddSingleton<NuevoRegistroPaso1ViewModel>();
             builder.Services.AddSingleton<NuevoRegistroPaso2ViewModel>();
             builder.Services.AddSingleton<NuevoRegistroPaso3ViewModel>();
             builder.Services.AddTransient<RevisionRegistroViewModel>();
+
+            //pages
+            builder.Services.AddTransient<DashboardPage>();
+            builder.Services.AddTransient<HistorialPage>();
+            builder.Services.AddTransient<DetalleRegistroPage>();
+            builder.Services.AddTransient<ConfigurarFirmaPage>();
 
             builder.Services.AddSingleton<NuevoRegistroPaso1Page>();
             builder.Services.AddSingleton<NuevoRegistroPaso2Page>();

@@ -3,10 +3,10 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               x:Class="SLA.Views.DetalleRegistroPage"
               BackgroundColor="#1a1c1e"
-              Title="Reporte técnicp">
+              Title="Reporte técnico">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="PDF" Clicked="OnExportarPdfClicked"/>
+        <ToolbarItem Text="Descargar PDF" Clicked="OnExportarPdfClicked"/>
     </ContentPage.ToolbarItems>
 
     <ScrollView>

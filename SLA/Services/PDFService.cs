@@ -9,6 +9,8 @@ public class PDFService
             using (var reader = new StreamReader(stream))
                 html = await reader.ReadToEndAsync();
 
+        string firmaOperadorBase64 = Preferences.Get("FirmaOperadorBase64", string.Empty);
+
         var filasItems = ""; //dibujito del form 2404 con mi html/css precioso (ya estamos en mi terreno)
         foreach (var item in registro.Items)
         {
@@ -32,6 +34,10 @@ public class PDFService
             .Replace("{{RECEPTOR_GRADO}}", registro.GradoUnidadReceptor?.ToUpper() ?? "---")
              //firma
              .Replace("{{FIRMA_RECEPTOR}}", $"<img src='data:image/png;base64,{firmaBase64}' class='firma-img' />")
+            //firma op (la guardada por def)
+            .Replace("{{FIRMA_OPERADOR}}", !string.IsNullOrEmpty(registro.FirmaOperadorBase64)
+                ? $"<img src='data:image/png;base64,{registro.FirmaOperadorBase64}' class='firma-img' />"
+                : "<p style='font-size:10px;'>Sin firma registrada</p>")
             //
             .Replace("{{ESTADO}}", registro.Estado.ToString().ToUpper())
             .Replace("{{OBSERVACIONES}}", registro.Observaciones ?? "SIN NOVEDAD")

@@ -110,5 +110,11 @@ namespace SLA.ViewModels
                     await page.DisplayAlertAsync( "Error", ex.Message, "OK");
             }
         }
+
+        [RelayCommand]
+        private async Task IrAConfigurarFirma()
+        {
+            await Shell.Current.GoToAsync(nameof(ConfigurarFirmaPage));
+        }
     }
 }

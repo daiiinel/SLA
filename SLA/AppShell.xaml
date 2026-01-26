@@ -5,7 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:SLA.Views"
     FlyoutBehavior="Disabled"
-    Title="SLA">
+    Title="SLA"
+    TitleColor="#a8c7fa"
+    Shell.BackgroundColor="#1a1c1e"
+    Shell.ForegroundColor="#a8c7fa">
 
     <!-- Página inicial: LOGIN -->
     <ShellContent

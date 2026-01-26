@@ -2,8 +2,8 @@
 
 public enum EstadoRegistro
 {
-    Borrador,
-    Enviado,
-    Aprobado,
+    Borrador, //en proceso
+    Entregado, //acciona operador
+    Auditado, //acciona auditor
     Rechazado
 }

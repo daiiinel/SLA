@@ -18,8 +18,9 @@ public class Registro
     public string? NombreCompletoReceptor { get; set; }
     public string? GradoUnidadReceptor { get; set; }
 
-    //firma
+    //firmas
     public string? FirmaBase64 { get; set; }
+    public string? FirmaOperadorBase64 { get; set; }
 }
 
 /*
