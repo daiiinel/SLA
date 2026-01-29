@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using SLA.Models;
 using SLA.Services;
+using SLA.Views;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 
@@ -30,15 +31,16 @@ namespace SLA.ViewModels
             _ = CargarRegistrosAsync();
         }
 
-        private void OnRegistroSeleccionadoChanged(Registro? value)
+        private async void OnRegistroSeleccionadoChanged(Registro? value)
         {
             if (value != null)
             {
-                // Guardamos en el servicio "Puente" para que la página de detalle tenga info
-                RegistroActualService.RegistroActual = value;
+                var parametros = new Dictionary<string, object>  { { "Registro", value } };
 
-                // Opcional: Navegar automáticamente al detalle
-                // Shell.Current.GoToAsync(nameof(DetalleRegistroPage));
+
+                await Shell.Current.GoToAsync(nameof(DetalleRegistroPage), parametros);
+
+                RegistroSeleccionado = null;
             }
         }
 

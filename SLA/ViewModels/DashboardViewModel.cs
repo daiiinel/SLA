@@ -116,5 +116,11 @@ namespace SLA.ViewModels
         {
             await Shell.Current.GoToAsync(nameof(ConfigurarFirmaPage));
         }
+
+        [RelayCommand]
+        private async Task IrAArchivoAuditoria()
+        {
+            await Shell.Current.GoToAsync(nameof(ArchivoAuditoriaPage));
+        }
     }
 }

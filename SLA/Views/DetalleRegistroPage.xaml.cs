@@ -9,6 +9,16 @@ public partial class DetalleRegistroPage : ContentPage, IQueryAttributable
     private readonly IPrintService _printService;
     public Registro? _registro;
 
+    //props pal mood auditor
+    public bool IsAuditorMode => SessionService.RolActual == Roles.Auditor && _registro?.Estado == EstadoRegistro.Entregado;
+
+    private string _observacionAuditoria = string.Empty;
+    public string ObservacionAuditoria
+    {
+        get => _observacionAuditoria;
+        set { _observacionAuditoria = value; OnPropertyChanged(); }
+    }
+    
     public DetalleRegistroPage(IPrintService printService)
     {
         InitializeComponent();
@@ -22,8 +32,9 @@ public partial class DetalleRegistroPage : ContentPage, IQueryAttributable
     {
         base.OnAppearing();
 
-        if (BindingContext == null)
-            BindingContext = RegistroActualService.RegistroActual;
+        OnPropertyChanged(nameof(IsAuditorMode)); //forzamos act 
+        //if (BindingContext == null)
+          //  BindingContext = RegistroActualService.RegistroActual;
     }
     // recibir datos en MAUI Shell
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -31,9 +42,84 @@ public partial class DetalleRegistroPage : ContentPage, IQueryAttributable
         if (query.ContainsKey("Registro"))
         {
             _registro = query["Registro"] as Registro;
-            BindingContext = _registro; //llena los campos del xaml
+            this.BindingContext = _registro; //llena los campos del xaml
 
-            System.Diagnostics.Debug.WriteLine($"Recibido registro ID: {_registro?.Id}");
+            if (!string.IsNullOrWhiteSpace(_registro?.FirmaBase64))
+            {
+                try
+                {
+                    // Limpiamos el string por si acaso trae el prefijo de html
+                    string base64 = _registro.FirmaBase64;
+                    if (base64.Contains(","))
+                        base64 = base64.Split(',')[1];
+
+                    byte[] imageBytes = Convert.FromBase64String(base64);
+                    ImgFirmaReceptor.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error cargando firma: {ex.Message}");
+                }
+            }
+            OnPropertyChanged(nameof(IsAuditorMode));
+        }
+    }
+
+    private async void OnAprobarClicked(object sender, EventArgs e)
+    {
+        if (_registro == null) 
+            return;
+
+        bool confirmar = await DisplayAlertAsync("Confirmar", "Desea aprobar y validar este movimiento?", "Sí", "No");
+        if (!confirmar) 
+            return;
+
+        try
+        {
+            // Actualizamos estado
+            _registro.Estado = EstadoRegistro.Auditado;
+
+            // Si el auditor escribe algo -> lo sumamos a las obs y actualizamos
+            if (!string.IsNullOrWhiteSpace(ObservacionAuditoria))
+                _registro.Observaciones += $"\n[AUDITORÍA]: {ObservacionAuditoria}";
+
+            await RegistroStorageService.ActualizarAsync(_registro);
+
+            await DisplayAlertAsync("Éxito", "El registro ha sido auditado y aprobado", "OK");
+
+            // Volvemos a la lista de revisión
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", $"No se pudo actualizar el registro: {ex.Message}", "OK");
+        }
+    }
+
+    private async void OnRechazarClicked(object sender, EventArgs e)
+    {
+        if (_registro == null) 
+            return;
+
+        if (string.IsNullOrWhiteSpace(ObservacionAuditoria))
+        {
+            await DisplayAlertAsync("Atención", "Debe indicar el motivo del rechazo en el campo de observaciones.", "OK");
+            return;
+        }
+
+        try
+        {
+            _registro.Estado = EstadoRegistro.Rechazado;
+            _registro.Observaciones += $"\n[RECHAZADO]: {ObservacionAuditoria}";
+
+            await RegistroStorageService.ActualizarAsync(_registro);
+
+            await DisplayAlertAsync("Registro Rechazado", "El registro ha sido devuelto al operador.", "OK");
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Error", ex.Message, "OK");
         }
     }
 

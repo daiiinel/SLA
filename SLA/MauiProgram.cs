@@ -31,6 +31,8 @@ namespace SLA
             builder.Services.AddSingleton<NuevoRegistroPaso3ViewModel>();
             builder.Services.AddTransient<RevisionRegistroViewModel>();
 
+            builder.Services.AddTransient<ArchivoAuditoriaViewModel>();
+
             //pages
             builder.Services.AddTransient<DashboardPage>();
             builder.Services.AddTransient<HistorialPage>();
@@ -41,6 +43,8 @@ namespace SLA
             builder.Services.AddSingleton<NuevoRegistroPaso2Page>();
             builder.Services.AddSingleton<NuevoRegistroPaso3Page>();
             builder.Services.AddTransient<RevisionRegistrosPage>();
+
+            builder.Services.AddTransient<ArchivoAuditoriaPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

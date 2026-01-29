@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SLA.ViewModels"
+             xmlns:models="clr-namespace:SLA.Models"
+             x:DataType="vm:ArchivoAuditoriaViewModel"
+             x:Class="SLA.Views.ArchivoAuditoriaPage"
+             BackgroundColor="#1a1c1e"
+             Title="Archivo de Auditoría">
+
+    <Grid RowDefinitions="Auto, *" Padding="20">
+
+        <Border Grid.Row="0" BackgroundColor="#2c2f33"
+                Stroke="#454b52" StrokeShape="RoundRectangle 8"
+                Padding="15" Margin="0,0,0,15">
+
+            <VerticalStackLayout Spacing="10">
+                <Label Text="PARÁMETROS DE BÚSQUEDA" TextColor="#a8c7fa"
+                       FontSize="11" FontAttributes="Bold"
+                       CharacterSpacing="2" Margin="0,0,0,5"/>
+
+                <Grid ColumnDefinitions="80,*">
+                    <Label Grid.Column="0" Text="Tipo:" TextColor="#8e9196"
+                           FontSize="12" FontAttributes="Bold"
+                           VerticalOptions="Center"/>
+                    <Border Grid.Column="1" Stroke="#454b52" StrokeShape="RoundRectangle 4" 
+                            Padding="5,0" BackgroundColor="#1a1c1e">
+                        <Picker x:Name="TipoFiltroPicker"
+                                ItemsSource="{Binding TiposMovimiento}"
+                                Title="Seleccionar" 
+                                TextColor="White" TitleColor="#8e9196"
+                                SelectedIndexChanged="OnFiltroChanged" />
+                    </Border>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="5">
+                        <Label Text="Desde:" TextColor="#8e9196" FontSize="10" FontAttributes="Bold"/>
+                        <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" BackgroundColor="#1a1c1e">
+                            <DatePicker x:Name="FechaDesdePicker" 
+                                        TextColor="White" 
+                                        Format="dd/MM/yyyy"
+                                        DateSelected="OnFiltroChanged" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="5">
+                        <Label Text="Hasta:" TextColor="#8e9196" FontSize="10" FontAttributes="Bold"/>
+                        <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" BackgroundColor="#1a1c1e">
+                            <DatePicker x:Name="FechaHastaPicker" 
+                                        TextColor="White" 
+                                        Format="dd/MM/yyyy"
+                                        DateSelected="OnFiltroChanged" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding RegistrosFinalizados}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnRegistroSeleccionado">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10" Margin="0,50">
+                    <Label Text="No se encontraron registros con los filtros aplicados." 
+                           TextColor="#8e9196" HorizontalTextAlignment="Center" FontSize="13"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Registro">
+                    <Border Padding="15" Margin="0,0,0,10"
+                            BackgroundColor="#24272b"
+                            Stroke="#454b52" StrokeShape="RoundRectangle 5">
+
+                        <Grid ColumnDefinitions="6, *, auto" ColumnSpacing="15">
+
+                            <Border Grid.Column="0" WidthRequest="6" VerticalOptions="Fill" BackgroundColor="Gray">
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding Estado}" Value="{x:Static models:EstadoRegistro.Auditado}">
+                                        <Setter Property="BackgroundColor" Value="#2E7D32" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Border" Binding="{Binding Estado}" Value="{x:Static models:EstadoRegistro.Rechazado}">
+                                        <Setter Property="BackgroundColor" Value="#C62828" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding NombreCompletoReceptor}" 
+                                       TextColor="White" FontSize="14" FontAttributes="Bold"/>
+                                <Label Text="{Binding Unidad}" 
+                                       TextColor="#a8c7fa" FontSize="11" />
+                                <Label Text="{Binding TipoMovimiento}" 
+                                       TextColor="#8e9196" FontSize="10" FontAttributes="Italic"/>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding Fecha, StringFormat='{0:dd MMM}'}" 
+                                       TextColor="White" FontSize="12" FontAttributes="Bold" HorizontalOptions="End"/>
+                                <Label Text="{Binding Estado}" FontSize="10" FontAttributes="Bold" HorizontalOptions="End">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Estado}" Value="{x:Static models:EstadoRegistro.Auditado}">
+                                            <Setter Property="TextColor" Value="#2E7D32" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding Estado}" Value="{x:Static models:EstadoRegistro.Rechazado}">
+                                            <Setter Property="TextColor" Value="#C62828" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
