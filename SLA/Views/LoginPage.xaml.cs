@@ -21,13 +21,11 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        // LOGIN SIMULADO
+        // LOGIN SIMULADO (por ahora, prox: necesario? quiénes podrán crear cuenta? como priorizamos?etc)
         Roles? rol = null;
 
         if (usuario == "admin" && password == "123")
             rol = Roles.Operador;
-        else if (usuario == "jefe" && password == "123")
-            rol = Roles.Supervisor;
         else if (usuario == "auditor" && password == "123")
             rol = Roles.Auditor;
 

@@ -37,7 +37,7 @@
                         <Label Text="Identificacion del usuario" TextColor="#8e9196"
                            FontSize="10" FontAttributes="Bold" Margin="5,0"/>
                         <Border Stroke="#454b52" StrokeShape="RoundRectangle 4" Padding="10,0">
-                            <!--ID de soldado o DNI/CUIT? preguntar luego (por el tema de jefe y auditores)-->
+                            <!--ID de persona o DNI/CUIT? preguntar luego (por el tema de operadores y auditores)-->
                             <Entry  x:Name="UsuarioEntry"
                                 Placeholder="Ingrese ID" 
                                 Keyboard="Text"/>

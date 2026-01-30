@@ -7,6 +7,5 @@ namespace SLA;
 public enum Roles
 {
     Operador,
-    Supervisor,
     Auditor
 }

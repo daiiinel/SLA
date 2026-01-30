@@ -25,7 +25,6 @@ namespace SLA.ViewModels
                 if (SetProperty(ref _rolActual, value))
                 {
                     OnPropertyChanged(nameof(IsOperador));
-                    OnPropertyChanged(nameof(IsJefe));
                     OnPropertyChanged(nameof(IsAuditor));
                 }
             }
@@ -34,7 +33,6 @@ namespace SLA.ViewModels
         // Flags por rol -> independientes del sservice y dependientes del vmodel
 
         public bool IsOperador => RolActual == Roles.Operador;
-        public bool IsJefe => RolActual == Roles.Supervisor;
         public bool IsAuditor => RolActual == Roles.Auditor;
 
         // Constructor

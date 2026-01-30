@@ -58,22 +58,17 @@ namespace SLA.Views
                 await Shell.Current.GoToAsync("//LoginPage");
                 return;
             }
-            if (SessionService.RolActual != Roles.Supervisor)
-            {
+            if (SessionService.RolActual != Roles.Auditor)
                 HistorialButton.IsVisible = false;
-            }
 
             BienvenidaLabel.Text = $"Hola, {SessionService.UsuarioActual}";
         }
         private async void OnLogoutClicked(object sender, EventArgs e)
         {
             SessionService.CerrarSesion();
-            
 
             // Reinicia la navegación y vuelve al Login
             await Shell.Current.GoToAsync("//LoginPage");
         }
-
-
     }
 }
